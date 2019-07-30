@@ -1,0 +1,29 @@
+<!-- Disqus Comments -->
+<% if (theme.comments && theme.comments.disqus_shortname){ %>
+<script type="text/javascript">
+    var disqus_shortname = '<%= theme.comments.disqus_shortname %>';
+
+    (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/<% if (page.comments){ %>embed.js<% } else { %>count.js<% } %>';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+<% } %>
+<% if (theme.mermaid.enable) { %>
+    <script src='https://cdn.bootcss.com/mermaid/<%= theme.mermaid.version %>/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'forest'});
+      }
+    </script>
+  <% } %>
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+(function(){
+  hljs.initHighlightingOnLoad();
+}())
+</script>
