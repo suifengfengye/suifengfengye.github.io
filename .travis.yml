@@ -23,7 +23,7 @@ after_script:
 
 branches:
   only:
-    - gh-page
+    - gh-pages
 env:
  global:
    - GH_REF: git@github.com:suifengfengye/suifengfengye.github.io.git
