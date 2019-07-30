@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="设想，我们正在使用react构建一个单页应用（SPA），我们应该怎么设置路由呢？在页面没有刷新的情况下，要更改页面的某个部分或者整个页面，这时候就是使用前端路由的时候了。配合react构建SPA的路由框架非react-router莫属。react-router更新到4.0版本，其设计思想已经和前几个">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="John Doe">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="reactRouter1-初识react router">
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Hexo">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary">
+    
+
+    <!-- Title -->
+    
+    <title>reactRouter1-初识react router - Hexo</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Hexo">
+            <img src="http://www.codeblocq.com/assets/projects/hexo-theme-anodyne/assets/anodyne.svg" class="dib h3" alt="Hexo">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="主页">
+                    主页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="列表">
+                    列表
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/tags" 
+                    title="标签">
+                    标签
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/categories" 
+                    title="分类">
+                    分类
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about.html" 
+                    title="关于">
+                    关于
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">reactRouter1-初识react router</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2019-02-25</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/react-router/">#react-router</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <p>设想，我们正在使用react构建一个单页应用（SPA），我们应该怎么设置路由呢？在页面没有刷新的情况下，要更改页面的某个部分或者整个页面，这时候就是使用前端路由的时候了。配合react构建SPA的路由框架非react-router莫属。react-router更新到4.0版本，其设计思想已经和前几个版本不一样。其设计的思路是”动态路由”。何为”动态路由”?就是路由发生在app的渲染过程中！那与之相对应的就是”静态路由”，静态路由是在应用初始化前就已经定义好路由信息。所以，从定义上看是完全不一样的，那在使用的过程中也会有很大差别。</p>
+<p>接下来我们看看react-router是如何工作的？</p>
+<ul>
+<li>(1) 把&lt;Router /&gt;组件放到应用的最顶层</li>
+<li>(2) 使用&lt;Link /&gt;组件定义路由</li>
+<li>(3) 最后，使用&lt;Route /&gt;组件展现路由对应的UI</li>
+</ul>
+<p>如上，react-router会涉及到几个重要的组件，分别&lt;是Router /&gt;、&lt;Link /&gt;和&lt;Route /&gt;,翻译过来就是路由组件、导航组件和路由匹配组件。实际上，react-router也就是由这三类组件组成，所有这些组件都可以从”react-router-dom”这个npm包中导入使用。</p>
+<p>我们来看看路由组件&lt;Router /&gt;,针对web应用，react-router提供了&lt;BrowserRouter /&gt;和&lt;HashRouter /&gt;。除了实现原理不一样外，使用上也有区别，&lt;BrowserRouter /&gt;支持服务端渲染而&lt;HashRouter /&gt;不支持，所以在使用的时候得注意这一点。</p>
+<p>基于以上对react-router的简单认识，我们来把它使用起来，加深理解。假设我们在构建一个”Todo应用”，包含两个一面，一个待办列表页面，另一个是添加待办事项的页面。我们来一步步实现它。</p>
+<h1 id="1、搭建环境"><a href="#1、搭建环境" class="headerlink" title="1、搭建环境"></a>1、搭建环境</h1><p>要使用react-router，必须得把react的页面配置起来。我们简单地使用webpack来进行配置，并编写简单的页面，搭建起一个开发环境。目录信息如下：</p>
+<ul>
+<li>package.json</li>
+<li>webpack.config.js</li>
+<li>src<ul>
+<li>AddTodo.js (添加待办事项页面)</li>
+<li>app.js (顶层App组件)</li>
+<li>index.js (入口文件)</li>
+<li>Todo.js (待办事项)</li>
+<li>TodoList.js (待办事项列表页面)</li>
+</ul>
+</li>
+</ul>
+<p>具体实现参考 <a href="https://github.com/Two-Ftry/react-essay/tree/master/react-router-00" target="_blank" rel="noopener">这里</a> 。</p>
+<h1 id="2、添加react-router"><a href="#2、添加react-router" class="headerlink" title="2、添加react-router"></a>2、添加react-router</h1><p>react-router 4.0+的三类组件（即路由组件、导航组件和路由匹配组件），都在”react-router-dom”这个npm包里面。我们先在项目根目录下安装依赖。</p>
+<pre><code>&gt; npm install -D react-router-dom</code></pre>
+<p>依赖安装完成之后。我们来实现路由。按照上面提到的react-router工作的三个步骤，我们来一步步实现。</p>
+<h2 id="2-1-添加-lt-Router-gt-组件"><a href="#2-1-添加-lt-Router-gt-组件" class="headerlink" title="2.1 添加&lt;Router /&gt;组件"></a>2.1 添加&lt;Router /&gt;组件</h2><p>在app的顶层添加router组件，这里我们的index.js入口文件，就是整个web app的顶部，所以我们在index.js文件中添加&lt;Router /&gt;。</p>
+<pre><code>import React from &#39;react&#39;
+import ReactDOM from &#39;react-dom&#39;
+import { HashRouter as Router } from &#39;react-router-dom&#39;
+
+import App from &#39;.&#x2F;app&#39;
+
+ReactDOM.render(
+    &lt;Router&gt;
+        &lt;App &#x2F;&gt;
+    &lt;&#x2F;Router&gt;,
+    document.getElementsByTagName(&#39;BODY&#39;)[0],
+)</code></pre>
+<p>这里我们使用HashRouter，因为是前端的简单实现，使用HashRouter和BrowserRouter都可。然后把&lt;Router /&gt;把  &lt; App /&gt;包裹起来，就完成任务了。</p>
+<p>但是Router到底做了些什么？为什么要加Router在顶层呢？</p>
+<h2 id="2-2-使用-lt-Link-gt-组件定义路由"><a href="#2-2-使用-lt-Link-gt-组件定义路由" class="headerlink" title="2.2 使用&lt;Link /&gt;组件定义路由"></a>2.2 使用&lt;Link /&gt;组件定义路由</h2><p>todo应用的操作逻辑，进来之后首先展现列表页；从列表页，可以进入“添加页面”；而从“添加页面”又可以返回列表页，形成一个闭环。</p>
+<p>列表页(TodoList.js)添加 &lt;Link /&gt; 的代码如下：</p>
+<table style="margin-left: auto; margin-right: auto;margin-top:-150px;"><br>        <tr><br>            <td><br>    <pre><code>&#x2F;&#x2F; TodoList.js(添加Link前)
+import React from &#39;react&#39;
+import Todo from &#39;.&#x2F;Todo&#39;
+
+const TodoList = ({todos}) =&gt; (
+    &lt;div&gt;
+        &lt;h1&gt;待办列表&lt;&#x2F;h1&gt;
+        &lt;ul&gt;
+            {todos.map((todo, index) =&gt; (
+                &lt;Todo key={index} {...todo} &#x2F;&gt;
+            ))}
+        &lt;&#x2F;ul&gt;
+    &lt;&#x2F;div&gt;
+)
+
+export default TodoList</code></pre><br>            </td><br>            <td><br>    <pre><code>&#x2F;&#x2F; TodoList.js(添加Link后)
+import React from &#39;react&#39;
+import { Link } from &#39;react-router-dom&#39;
+import Todo from &#39;.&#x2F;Todo&#39;
+const TodoList = ({todos}) =&gt; (
+    &lt;div&gt;
+        &lt;h1&gt;待办列表&lt;&#x2F;h1&gt;
+        &lt;Link to=&quot;addTodo&quot;&gt;添加&lt;&#x2F;Link&gt;
+        &lt;ul&gt;
+            {todos.map((todo, index) =&gt; (
+                &lt;Todo key={index} {...todo} &#x2F;&gt;
+            ))}
+        &lt;&#x2F;ul&gt;
+    &lt;&#x2F;div&gt;
+)
+export default TodoList</code></pre><br>            </td><br>        </tr><br>    </table>
+
+<p>添加页(AddTodo.js)添加 &lt;Link /&gt; 的代码如下：</p>
+<table style="margin-left: auto; margin-right: auto;margin-top:-150px;"><br>        <tr><br>            <td><br>    <pre><code>&#x2F;&#x2F; AddTodo.js(添加Link前)
+import React from &#39;react&#39;;
+
+const AddTodo = () =&gt; {
+    return (
+        &lt;div&gt;
+            &lt;h1&gt;添加待办&lt;&#x2F;h1&gt;
+            &lt;br &#x2F;&gt;
+            &lt;input type=&quot;text&quot; &#x2F;&gt;
+            &lt;button type=&quot;button&quot;&gt;Add&lt;&#x2F;button&gt;
+        &lt;&#x2F;div&gt;
+    )
+}
+
+export default AddTodo</code></pre><br>            </td><br>            <td><br>    <pre><code>&#x2F;&#x2F; AddTodo.js(添加Link后)
+import React from &#39;react&#39;;
+import { Link } from &#39;react-router-dom&#39;
+const AddTodo = () =&gt; {
+    return (
+        &lt;div&gt;
+            &lt;h1&gt;添加待办&lt;&#x2F;h1&gt;
+            &lt;Link to=&quot;&#x2F;&quot;&gt;返回&lt;&#x2F;Link&gt;
+            &lt;br &#x2F;&gt;
+            &lt;input type=&quot;text&quot; &#x2F;&gt;
+            &lt;button type=&quot;button&quot;&gt;Add&lt;&#x2F;button&gt;
+        &lt;&#x2F;div&gt;
+    )
+}
+export default AddTodo</code></pre><br>            </td><br>        </tr><br>    </table>
+
+<h2 id="2-3-使用-lt-Route-gt-组件展现路由对应的UI"><a href="#2-3-使用-lt-Route-gt-组件展现路由对应的UI" class="headerlink" title="2.3 使用&lt;Route /&gt;组件展现路由对应的UI"></a>2.3 使用&lt;Route /&gt;组件展现路由对应的UI</h2><p>上一个小节，我们列表页的路由为”/“,AddTodo页面的路由为”/addTodo”。所以我们在使用&lt;Route /&gt;就使用这两个路由定义。&lt;Route /&gt;有三种方式渲染路由组件，</p>
+<ol>
+<li>component：component属性，直接配置需要展示的组件即可；</li>
+<li>render: render是一个方法，可以添加函数定义；而要展示的组件，通过return返回即可展示；</li>
+<li>children：children和render有一点类似，都是一个方法，不过children中的组件，无论路由是否匹配都会展示。</li>
+</ol>
+<p>PS: 当看到children属性的时候，我们可能会想到在react的组件树，父组件可以通过children组件获取到子组件。没错，这里的children和react中定义的是一样的。</p>
+<p>我们在app.js文件中定义&lt;Route /&gt;，代码如下(只展示render部分的代码)：</p>
+<table style="margin-left: auto; margin-right: auto;margin-top:-150px;"><br>        <tr><br>            <td style="vertical-align: top;"><br>    <pre><code>&#x2F;&#x2F; app.js(添加Route前)
+&lt;div&gt;
+    &lt;TodoList todos={data} &#x2F;&gt;
+    &lt;AddTodo &#x2F;&gt;
+&lt;&#x2F;div&gt;</code></pre><br>            </td><br>            <td style="vertical-align: top;"><br>    <pre><code>&#x2F;&#x2F; app.js(添加Route后)
+&lt;div&gt;
+    &lt;Route exact path=&quot;&#x2F;&quot; render={() =&gt; {
+        return (&lt;TodoList todos={data} &#x2F;&gt;)
+    }}&#x2F;&gt;
+    &lt;Route path=&quot;&#x2F;addTodo&quot; render={() =&gt; {
+        return (&lt;AddTodo &#x2F;&gt;)
+    }}&#x2F;&gt;
+&lt;&#x2F;div&gt;</code></pre><br>            </td><br>        </tr><br>    </table>
+
+<h1 id="3、结语"><a href="#3、结语" class="headerlink" title="3、结语"></a>3、结语</h1><p>以上就是，一个简单的使用了react-router的react SPA应用。详细代码请 <a href="https://github.com/Two-Ftry/react-essay/tree/master/react-router-01" target="_blank" rel="noopener">戳这里</a></p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/react-router/">#react-router</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543393359754&di=98b179b898c6079686c30465812d3c54&imgtype=0&src=http%3A%2F%2Fimg3.kuwo.cn%2Fstar%2Fuserhead%2F49%2F84%2F1473703627587_232693149.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="John Doe">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            这是我的个人博客<br>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2019/07/27/python3-nginx-uwsgi/">python3+nginx+uwsgi+django环境搭建（Centos）</a>
+        </p>
+    
+        <p>
+            <a href="/2019/06/05/前端也来学AI/">前端也来学AI</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/29/react-ace-placeholder/">react-ace placeholder &amp; 受控处理</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/20/reactRouter2-skills/">reactRouter2-skills</a>
+        </p>
+    
+        <p>
+            <a href="/2019/02/25/reactRouter1-fist-acquaintance/">reactRouter1-初识react router</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://twitter.com/?lang=en" target="_blank">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.facebook.com/" target="_blank">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://dribbble.com/" target="_blank">
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/klugjo/hexo-theme-anodyne" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://plus.google.com/" target="_blank">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.behance.net/" target="_blank">
+                            <i class="fa fa-behance"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://500px.com/" target="_blank">
+                            <i class="fa fa-500px"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:test@example.com" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="/#" target="_blank">
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                @Untitled. All right reserved | Design & Hexo <a class="link dim white" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+    <script src='https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'forest'});
+      }
+    </script>
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+(function(){
+  hljs.initHighlightingOnLoad();
+}())
+</script>
+
+</body>
+
+</html>

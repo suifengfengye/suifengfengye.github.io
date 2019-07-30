@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="react和vue作为目前前端非常流行的两大框架，而redux和vuex分别是这两大框架会用到的状态管理库，在学习了redux后，是非常有必要与vuex做一下对比。vuex背后的基本思想，借鉴了redux等库，但是又有所不同，vuex是专门为vue设计的状态管理库，以利用vue的响应机制来进行高效的">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="John Doe">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="redux(八)-redux与vuex">
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Hexo">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary">
+    
+
+    <!-- Title -->
+    
+    <title>redux(八)-redux与vuex - Hexo</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Hexo">
+            <img src="http://www.codeblocq.com/assets/projects/hexo-theme-anodyne/assets/anodyne.svg" class="dib h3" alt="Hexo">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="主页">
+                    主页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="列表">
+                    列表
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/tags" 
+                    title="标签">
+                    标签
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/categories" 
+                    title="分类">
+                    分类
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about.html" 
+                    title="关于">
+                    关于
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">redux(八)-redux与vuex</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2019-01-13</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/redux-vuex/">#redux vuex</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <p>react和vue作为目前前端非常流行的两大框架，而redux和vuex分别是这两大框架会用到的状态管理库，在学习了redux后，是非常有必要与vuex做一下对比。vuex背后的基本思想，借鉴了redux等库，但是又有所不同，vuex是专门为vue设计的状态管理库，以利用vue的响应机制来进行高效的状态更新。所以如果既用过redux也用过vuex，那就会发现它们之间那么的相似，用起来又有所不同。</p>
+<h1 id="1、状态"><a href="#1、状态" class="headerlink" title="1、状态"></a>1、状态</h1><p>redux和vuex作为状态管理库，都维护着应用的状态（即state）。但是从使用者定义state的方式来看，完全是不一样等。</p>
+<p>在redux里面，state是通过reducer的返回值来确定的，所以是需要分析reducer才能看出它的结构。而vuex里面，state是直接可以定义的。</p>
+<pre><code>import Vuex from &#39;vuex&#39;
+const store = new Vuex.Store({
+    state: {
+        visibilityFilter: &#39;SHOW_ALL&#39;,
+        todos: [],
+    },
+})</code></pre>
+<p>从这一点来看，虽然都是state，但是vuex的阅读性和维护性更好。所以，我们会看到基于redux基础上的库dva，也采用了vuex的这种方式。</p>
+<h1 id="2、获取状态"><a href="#2、获取状态" class="headerlink" title="2、获取状态"></a>2、获取状态</h1><p>redux中获取状态通过store.getState()方法来获取。而在vuex中，通过store.state.xxx的形式直接获取。并且vuex还提供了getter的方式来派生出一些状态，getter的返回值会根据它的依赖被缓存起来，且只有当它的依赖值发生了改变才会被重新计算。</p>
+<pre><code>&#x2F;&#x2F; vuex的getter
+getters: {
+    visibilityFilter (state) {
+        return state.visibilityFilter
+    }
+}</code></pre>
+<h1 id="3、更改状态"><a href="#3、更改状态" class="headerlink" title="3、更改状态"></a>3、更改状态</h1><p>redux里面能够更改state是reducer，vuex里面更改state的是mutation，从定义上是不一样的。reducer里面，接收上一次的state和action，返回新的state。而在vuex的mutation里面，会接收state和一个额外的参数，然后直接修改state状态，这一点是利用了vue的特性，所以vuex显得更加灵活一些。</p>
+<pre><code>&#x2F;&#x2F; reducer示例
+function visibilityFilter(state = &#39;SHOW_ALL&#39;, action) {
+    switch (action.type) {
+        case &#39;SET_VISIBILITY_FILTER&#39;:
+            return action.filter
+        default:
+            return state
+    }
+}</code></pre>
+<pre><code>&#x2F;&#x2F; mutation示例
+mutations: {
+    setVisibilityFilter (state, { filter }) {
+        state.visibilityFilter = filter
+    },
+}</code></pre>
+<h1 id="4、Action"><a href="#4、Action" class="headerlink" title="4、Action"></a>4、Action</h1><p>redux的action是数据从应用到store的有效载何。redux自身只能处理带type属性的object形式的Action，需要支持其他方式的Action（如function、promise）需要通过中间件的方式集成进去。而vuex的action，设计上就是用来处理异步的情况，而不是一个载何，而要更改state还需要在action里面commit一个mutation。</p>
+<pre><code>&#x2F;&#x2F; redux Action示例
+&#x2F;&#x2F; 更改过滤条件
+export function setVisibilityFilter(filter) {
+  return { type: &#39;SET_VISIBILITY_FILTER&#39;, filter }
+}</code></pre>
+<pre><code>&#x2F;&#x2F; vuex Action示例
+actions: {
+    initTodos ({ commit }) {
+        getTodos().then((data) =&gt; {
+            commit(&#39;initTodos&#39;, {
+                list: data.list,
+            })
+        })
+    }
+}</code></pre>
+<h1 id="5、结合其他库使用"><a href="#5、结合其他库使用" class="headerlink" title="5、结合其他库使用"></a>5、结合其他库使用</h1><p>在结合其他库使用方面，redux其实是不依赖于任何库的，所以它的用途也更广，可以和vue、Angular、Ember、jQuery 甚至纯JavaScript结合使用。不过要和其他库搭配，可能需要做一些工作，比如引入一些其他的库，比如redux和react搭配就会引入”react-redux”。<br>而vuex本身设计就是为vue做状态管理，vuex作为vue的一个plugin而存在，只能用在vue中，用途较窄。</p>
+<h1 id="6、结语"><a href="#6、结语" class="headerlink" title="6、结语"></a>6、结语</h1><p>以上是在使用redux和vuex过程中，发现它们的一些不同。在此记录下来，即使认识有偏差，也方便日后修改。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/redux-vuex/">#redux vuex</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543393359754&di=98b179b898c6079686c30465812d3c54&imgtype=0&src=http%3A%2F%2Fimg3.kuwo.cn%2Fstar%2Fuserhead%2F49%2F84%2F1473703627587_232693149.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="John Doe">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            这是我的个人博客<br>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2019/07/27/python3-nginx-uwsgi/">python3+nginx+uwsgi+django环境搭建（Centos）</a>
+        </p>
+    
+        <p>
+            <a href="/2019/06/05/前端也来学AI/">前端也来学AI</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/29/react-ace-placeholder/">react-ace placeholder &amp; 受控处理</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/20/reactRouter2-skills/">reactRouter2-skills</a>
+        </p>
+    
+        <p>
+            <a href="/2019/02/25/reactRouter1-fist-acquaintance/">reactRouter1-初识react router</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://twitter.com/?lang=en" target="_blank">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.facebook.com/" target="_blank">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://dribbble.com/" target="_blank">
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/klugjo/hexo-theme-anodyne" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://plus.google.com/" target="_blank">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.behance.net/" target="_blank">
+                            <i class="fa fa-behance"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://500px.com/" target="_blank">
+                            <i class="fa fa-500px"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:test@example.com" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="/#" target="_blank">
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                @Untitled. All right reserved | Design & Hexo <a class="link dim white" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+    <script src='https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'forest'});
+      }
+    </script>
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+(function(){
+  hljs.initHighlightingOnLoad();
+}())
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="在前端学习的过程当中，很多文档里面都会以”待办事项”作为例子展开说明。在学习redux的过程中，我们也使用”待办事项”作为例子。在介绍”redux搭配react”之前，我们先来实现”待办事项”需求的UI界面。待办事项的具体需求如下：
+
+一个待办事项的列表(用todos数组存储)todos数组中的元素">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="John Doe">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="redux(二)-待办事项项目UI实现">
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Hexo">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary">
+    
+
+    <!-- Title -->
+    
+    <title>redux(二)-待办事项项目UI实现 - Hexo</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Hexo">
+            <img src="http://www.codeblocq.com/assets/projects/hexo-theme-anodyne/assets/anodyne.svg" class="dib h3" alt="Hexo">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="主页">
+                    主页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="列表">
+                    列表
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/tags" 
+                    title="标签">
+                    标签
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/categories" 
+                    title="分类">
+                    分类
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about.html" 
+                    title="关于">
+                    关于
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">redux(二)-待办事项项目UI实现</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-12-15</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/redux-react/">#redux react</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <p>在前端学习的过程当中，很多文档里面都会以”待办事项”作为例子展开说明。在学习redux的过程中，我们也使用”待办事项”作为例子。在介绍”redux搭配react”之前，我们先来实现”待办事项”需求的UI界面。待办事项的具体需求如下：</p>
+<blockquote><ol>
+<li>一个待办事项的列表(用todos数组存储)<br>todos数组中的元素为待办事项内容，包含两个字段:<pre><code>{
+ text: &#39;待办事项1&#39;, &#x2F;&#x2F; string
+ completed: false,&#x2F;&#x2F; boolean 是否完成的状态
+}</code></pre></li>
+<li>一个过滤条件filter，filter是一个字符串，标明目前需要将哪些待办事项展现出来<pre><code>SHOW_ALL: 展示全部待办事项
+SHOW_COMPLETED: 展示已完成的待办事项
+SHOW_ACTIVE: 展示未完成的待办事项
+</code></pre></li>
+<li>添加待办事项</li>
+</ol>
+</blockquote>
+<p>原本想把本文的相关内容和”redux搭配react”融在一起。但是在梳理章节的时候，发现需要比较多的前置知识，融合在一起，”redux搭配react”文章就太长了，不方便阅读。所以我们把”‘待办事项’项目UI实现”独立出来，方便后面的文章举例说明。</p>
+<h2 id="1、工程初始化"><a href="#1、工程初始化" class="headerlink" title="1、工程初始化"></a>1、工程初始化</h2><p>既然是作为一个基础功能，我们就将项目名称命名为”todo-base”。在任何一个目录下创建”todo-base”目录，执行如下操作:</p>
+<pre><code>&gt; cd todo-base
+# 初始化工程，按照步骤一步步填写
+&gt; npm init </code></pre>
+<p>npm init 执行完成了之后，目录下面就会有 package.json文件，该文件是什么？？<br>我们的项目中，会有源代码文件，也会有编译出来的代码文件供发布线上。在项目根目录下创建”src”和”dist”两个目录，分别放置源代码文件和编译出来的代码文件。</p>
+<pre><code>- dist
+- src
+package.json</code></pre>
+<p>接着，我们在src目录下创建我们的第一个js文件(index.js)，一个简单的npm项目架子就完成了。</p>
+<pre><code>&#x2F;&#x2F; index.js
+document.write(&#39;Hello World!&#39;)</code></pre>
+<h3 id="1-1-让项目跑起来"><a href="#1-1-让项目跑起来" class="headerlink" title="1.1 让项目跑起来"></a>1.1 让项目跑起来</h3><p>既然说简单的项目已经成型，那怎样让”Hello World!”的字样能够在浏览器中显示呢？我们在dist目录下创建index.html文件，添加基础的html代码，然后引入”index.js”文件。</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; &#x2F;&gt;
+    &lt;title&gt;Document&lt;&#x2F;title&gt;
+&lt;&#x2F;head&gt;
+&lt;body&gt;
+    &lt;script src=&quot;..&#x2F;src&#x2F;index.js&quot;&gt;&lt;&#x2F;script&gt;
+&lt;&#x2F;body&gt;
+&lt;&#x2F;html&gt;</code></pre>
+<p>我们用浏览器打开index.html，就可以看到”Hello World!”的字样啦。</p>
+<p>早先的web前端开发，就是这样的方式来进行的。只不过后来逐渐有了自动化打包的工具，这些步骤都通过打包实现了。后面将会看到我们是如何使用webpack将这个过程自动化的。</p>
+<h2 id="2、-webpack"><a href="#2、-webpack" class="headerlink" title="2、+ webpack"></a>2、+ webpack</h2><p>上一节中，我们在index.html中通过script标签，引入src/index.js，引入的是源文件。源文件直接引入到html当中，有几个方面的缺点：</p>
+<ol>
+<li>需要自己通过script标签手动引入js文件，不太灵活;</li>
+<li>这样引入的js文件，不能使用一些新的ES6、ES7特性，因为有些浏览器并不支持这些特性；</li>
+<li>script引入的js文件，还需要处理缓存的问题；</li>
+<li>想要对js文件进行混淆压缩也不方便。</li>
+</ol>
+<p>一般来说，现在的前端开发都会使用像webpack、gulp等这些打包工具。本文我们使用webpack来处理js文件，并自动打包输出到dist目录中，并添加上混淆压缩的功能。</p>
+<h3 id="2-1-webpack简单配置"><a href="#2-1-webpack简单配置" class="headerlink" title="2.1 webpack简单配置"></a>2.1 webpack简单配置</h3><p>webpack中有两个基本的概念：”输入”(entry)、”输出”(output)。webpack会根据入口的配置，逐步解析各个资源文件（包括js文件、css文件、图片等）形成一个依赖图。依赖图中的每个依赖项都会被处理，然后根据出口（output）的配置输出到对应的文件中。在我们的例子中，入口文件就是index.js，输出到”dist”目录下，所以webpack简单配置如下(在项目根目录下创建webpack.config.js文件)：</p>
+<pre><code>&#x2F;&#x2F; webpack.config.js
+const path = require(&#39;path&#39;)
+module.exports = {
+    entry: {
+        app: &#39;.&#x2F;src&#x2F;index&#39;, &#x2F;&#x2F; &quot;app&quot;key值可以随便定义，输出的时候就可以取这个key值为输出文件命名
+    },
+    output: {
+        path: path.resolve(__dirname, &#39;.&#x2F;dist&#39;),
+        filename: &#39;[name].js&#39;, &#x2F;&#x2F; 这里[name]就对应entry中的‘app’key值
+    }
+}</code></pre>
+<p>当然我们要为项目添加webpack的npm包才能使用webpack来对文件进行打包处理。在命令行中输入：</p>
+<pre><code>&#x2F;&#x2F; 确保当前处于项目根目录下再输入如下命令
+&gt; npm install -D webpack webpack-cli</code></pre>
+<p>当依赖包安装完成之后，我们就可以使用webpack进行打包了，使用命令行工具，输入如下命令：</p>
+<pre><code>&#x2F;&#x2F; 确保当前处于项目根目录下再输入如下命令
+&gt; webpack</code></pre>
+<p>待webpack之行完成，我们会在dist目录下看到”app.js”文件对输出。</p>
+<p>到此我们来看看解决来本节开篇所列问题对几个？貌似一个都没有解决！我们只是使用webpack对入口文件进行了简单的打包输出。但是不要泄气，只要使用了webpack，我们再来添加一些配置，上面的问题就可以得到解决。</p>
+<h3 id="2-2-使用webpack来解决问题"><a href="#2-2-使用webpack来解决问题" class="headerlink" title="2.2 使用webpack来解决问题"></a>2.2 使用webpack来解决问题</h3><p>（1） 避免手动引入js文件&amp;解决缓存问题</p>
+<p>在前面的例子中js文件是通过script标签引入到html中使用的。而上一小节，我们通过webpack已经能将js文件打包输出。如果html文件也能通过webpack输出，那么是不是打包出来的js文件就能自动的引入到html文件中呢（毕竟webpack的输出配置是我们手动配置的）？答案是可以的。</p>
+<p>此时，我们需要了解webpack的另一个概念”plugin”。plugin是对webpack功能的增强，让webpack能够做更多的事情。要让webpack能够输出html文件，我们需要使用到”html-webpack-plugin”。</p>
+<p>首先，我们来安装“html-webpack-plugin”的npm依赖包。</p>
+<pre><code>&gt; npm install -D html-webpack-plugin</code></pre>
+<p>接着修改webpack.config.js的配置：</p>
+<pre><code>&#x2F;&#x2F; webpack.config.js
+const path = require(&#39;path&#39;)
+const HtmlWebpackPlugin = require(&#39;html-webpack-plugin&#39;)
+module.exports = {
+    entry: {
+        app: &#39;.&#x2F;src&#x2F;index&#39;, &#x2F;&#x2F; &quot;app&quot;key值可以随便定义，输出的时候就可以取这个key值为输出文件命名
+    },
+    output: {
+        path: path.resolve(__dirname, &#39;.&#x2F;dist&#39;),
+        filename: &#39;[name].[chunkhash].js&#39;, &#x2F;&#x2F; 这里[name]就对应entry中的‘app’key值
+    },
+    plugins: [
+        new HtmlWebpackPlugin()
+    ]
+}</code></pre>
+<p>如上面的配置，除了添加plugins的配置外，还对output的filename配置改成了”[name].[chunkhash].js”,这里chunkhash是基于内容的hash值，每当js源文件的内容发生改变时，chunkhash值也随之改变，这就可以解决引入js文件的缓存问题了。</p>
+<p>（2）支持es6、es7特性</p>
+<p>要让我们的代码支持es6、es7新特性。需要使用到webpack的loader功能，而能将es6、es7语法转换成浏览器支持的语法，就是”babel-loader”。要使用babel，我们需要先安装</p>
+<ul>
+<li>babel : babel库</li>
+<li>babel-loader：webpack用来加载babel的库</li>
+<li>@babel/core：babel库的核心</li>
+<li>@babel/preset-react：支持react的语法</li>
+</ul>
+<pre><code>&gt; npm insall -D babel babel-loader @babel&#x2F;core @babel&#x2F;preset-react</code></pre>
+<p>在webpack.config.js中添加配置：</p>
+<pre><code>module.exports = {
+    &#x2F;&#x2F;...
+    module: {
+        rules: [
+            {
+                test: &#x2F;\.js$&#x2F;,
+                use: &#39;babel-loader&#39;,
+            }
+        ]
+    }
+}</code></pre>
+<p>这个配置告诉webpack，当加载js文件时，使用babel-loader进行转换。而babel-loader会调用babel来实现转换。</p>
+<p>不过上面的配置，仅仅使用了babel的核心功能，要让webpack支持更多的babel提供的功能，需要在项目根目录下创建babel的配置文件”.babelrc”。然后往这个文件里面添加如下内容：</p>
+<pre><code>&#x2F;&#x2F; .babelrc
+{
+    &quot;presets&quot;: [&quot;@babel&#x2F;preset-react&quot;]
+}</code></pre>
+<p>这个配置告诉babel调用“@babel/preset-react”来支持react的语法。</p>
+<h3 id="2-3-开发环境支持"><a href="#2-3-开发环境支持" class="headerlink" title="2.3 开发环境支持"></a>2.3 开发环境支持</h3><p>接着2.1和2.2节的配置，我们已经使用上了webpack对文件进行打包处理。但是我们在代码中是会使用到ES6、ES7的一些特性，在开发的时候，需要babel实时对代码进行编译输出才能看到开发的功能是否有问题。并且我们也不可能，开发一会，想看效果了然后webpack编译一下再用浏览器看结果，这样效率就太低了。</p>
+<p>为了能实时能看到我们开发的功能，我们需要在本地起一个web服务，然后使用webpack监控文件的变化，当文件发生变化时立即执行webpack进行代码编译输出，发布到web服务上，这样我们在浏览器访问这个web服务的地址就能实时看到结果了。而这些，都可以通过webpack的devServer配置项来实现。看下面的配置：</p>
+<pre><code>&#x2F;&#x2F; webpack.config.js
+module.exports = {
+    &#x2F;&#x2F; ...
+    devServer: {
+        contentBase: path.join(__dirname, &#39;dist&#39;), &#x2F;&#x2F; web服务的目录为 &quot;dist&quot; 目录
+        port: 9000 &#x2F;&#x2F; web服务端口
+    }
+}</code></pre>
+<p>配置好之后，如何启动devServer呢？首先，我们需要先安装”webpack-dev-server”这个npm包。</p>
+<pre><code>&#x2F;&#x2F; 确保当前处于项目根目录下再输入如下命令
+&gt; npm install -D webpack-dev-server</code></pre>
+<p>“webpack-dev-server”安装好之后，我们在命令行工具中输入”webpack-dev-server”即可启动服务了。</p>
+<pre><code>&#x2F;&#x2F; 确保当前处于项目根目录下再输入如下命令
+&gt; webpack-dev-server</code></pre>
+<p>web服务启动之后，在浏览器打开 “<a href="http://localhost:9000&quot;" target="_blank" rel="noopener">http://localhost:9000&quot;</a> 就可以看到”Hello World”字样了。</p>
+<h2 id="3、-react"><a href="#3、-react" class="headerlink" title="3、+ react"></a>3、+ react</h2><p>在上一节，我们已经使用webpack将环境搭好了，接着我们就来添加react的代码。然后将”待办事项”的UI实现出来。我们先来安装react的依赖包。</p>
+<pre><code>&gt; npm install -D react react-dom</code></pre>
+<p>在index.js中加入如下代码:</p>
+<pre><code>&#x2F;&#x2F; .&#x2F;src&#x2F;index.js
+import React from &#39;react&#39;
+import ReactDOM from &#39;react-dom&#39;
+
+import App from &#39;.&#x2F;app&#39;
+
+ReactDOM.render(
+    &lt;App &#x2F;&gt;, 
+    document.getElementsByTagName(&#39;BODY&#39;)[0],
+)</code></pre>
+<p>index.js是入口文件，会在body标签下渲染react组件<app>。组件App的代码如下（我们先搭一个架子）：</app></p>
+<pre><code>&#x2F;&#x2F; src&#x2F;app.js
+import React, { Component } from &#39;react&#39;;
+class App extends Component {
+    render() {
+        return (
+            &lt;div&gt;{&#39;todo app&#39;}&lt;&#x2F;div&gt;
+        )
+    }
+}
+export default App</code></pre>
+<h2 id="4、待办事项实现"><a href="#4、待办事项实现" class="headerlink" title="4、待办事项实现"></a>4、待办事项实现</h2><p>待办事项的UI分为三个部分：添加待办事项、待办事项列表、待办事项过滤条件。下面我们一个部分一个部分来实现，然后再组合起来。</p>
+<h3 id="4-1-添加待办事项UI"><a href="#4-1-添加待办事项UI" class="headerlink" title="4.1 添加待办事项UI"></a>4.1 添加待办事项UI</h3><p>待办事项的添加，我们只需要一个input输入框和一个添加的按钮。我們使用react的函数定义组件来实现：</p>
+<pre><code>&#x2F;&#x2F; src&#x2F;AddTodo.js
+import React from &#39;react&#39;;
+
+const AddTodo = () =&gt; {
+    return (
+        &lt;div&gt;
+            &lt;input type=&quot;text&quot; &#x2F;&gt;
+            &lt;button type=&quot;button&quot;&gt;Add&lt;&#x2F;button&gt;
+        &lt;&#x2F;div&gt;
+    )
+}
+
+export default AddTodo</code></pre>
+<h3 id="4-2-待办事项列表UI"><a href="#4-2-待办事项列表UI" class="headerlink" title="4.2 待办事项列表UI"></a>4.2 待办事项列表UI</h3><p>待办事项的列表，由列表项构成。所以这里拆分成Todo.js和TodoList.js两个文件。</p>
+<pre><code>&#x2F;&#x2F; src&#x2F;Todo.js
+const Todo = ({ onClick, completed, text }) =&gt; {
+    const style = {textDecoration: completed ? &#39;line-through&#39; : &#39;none&#39;}
+    return (
+    &lt;li
+        onClick={onClick}
+        style={style}
+    &gt;
+        {text}
+    &lt;&#x2F;li&gt;
+    )
+}</code></pre>
+<pre><code>&#x2F;&#x2F; src&#x2F;TodoList.js
+import React from &#39;react&#39;
+
+import Todo from &#39;.&#x2F;Todo&#39;
+
+const TodoList = ({todos, onTodoClick}) =&gt; (
+    &lt;ul&gt;
+        {todos.map((todo, index) =&gt; (
+            &lt;Todo key={index} {...todo} onClick={() =&gt; { onTodoClick(index) }}&#x2F;&gt;
+        ))}
+    &lt;&#x2F;ul&gt;
+)
+export default TodoList</code></pre>
+<h3 id="4-3-待办事项列表过滤"><a href="#4-3-待办事项列表过滤" class="headerlink" title="4.3 待办事项列表过滤"></a>4.3 待办事项列表过滤</h3><p>待办事项有”完成”、”未完成”两种状态，在显示待办事项列表的时候，默认显示所有的待办事项，也可以进行过滤。如果用户点击”Active”链接，则显示”未完成”状态的待办事项，如果用户点击”Completed”链接，则显示”完成”状态的待办事项。</p>
+<p>由于有三个链接，所以先定义链接的组件。</p>
+<pre><code>&#x2F;&#x2F; src&#x2F;Link.js
+import React from &#39;react&#39;
+
+const Link = ({ active, children, onClick }) =&gt; {
+    if (active) {
+      return &lt;span&gt;{children}&lt;&#x2F;span&gt;
+    }
+    return (
+      &lt;a
+        href=&quot;&quot;
+        onClick={e =&gt; {
+          e.preventDefault()
+          onClick &amp;&amp; onClick()
+        }}
+      &gt;
+        {children}
+      &lt;&#x2F;a&gt;
+    )
+}
+
+export default Link</code></pre>
+<p>把三个链接组合起来，我们定义一个Footer.js文件。</p>
+<pre><code>import React from &#39;react&#39;;
+import Link from &#39;.&#x2F;Link&#39;
+const Footer = () =&gt; (
+    &lt;p&gt;
+        Show:
+        &lt;Link active={true}&gt;ALL&lt;&#x2F;Link&gt;
+        &amp;nbsp;&amp;nbsp;
+        &lt;Link active={false}&gt;Active&lt;&#x2F;Link&gt;
+        &amp;nbsp;&amp;nbsp;
+        &lt;Link active={false}&gt;Completed&lt;&#x2F;Link&gt;
+    &lt;&#x2F;p&gt;
+)
+export default Footer</code></pre>
+<h3 id="4-4-组合起来"><a href="#4-4-组合起来" class="headerlink" title="4.4 组合起来"></a>4.4 组合起来</h3><p>上面几个小节，把几个模块的UI组件都定义好了。我们来修改app.js文件，把各个模块组合起来。</p>
+<pre><code>&#x2F;&#x2F; src&#x2F;app.js
+import React, { Component } from &#39;react&#39;;
+
+import AddTodo from &#39;.&#x2F;AddTodo&#39;
+import TodoList from &#39;.&#x2F;TodoList&#39;
+import Footer from &#39;.&#x2F;Footer&#39;
+
+&#x2F;&#x2F; 模拟数据
+const data = [
+    {
+        text: &#39;001&#39;,
+        completed: false,
+    },
+    {
+        text: &#39;002&#39;,
+        completed: true,
+    },
+]
+
+class App extends Component {
+    constructor (props) {
+        super(props)
+        this.onTodoClick = this.onTodoClick.bind(this)
+    }
+    onTodoClick (index) {
+        console.log(&#39;@@@@todo click&#39;, index)
+    }
+    render() {
+        return (
+            &lt;div&gt;
+                &lt;AddTodo &#x2F;&gt;
+                &lt;TodoList todos={data} onTodoClick={this.onTodoClick}&#x2F;&gt;
+                &lt;Footer &#x2F;&gt;
+            &lt;&#x2F;div&gt;
+        )
+    }
+}
+
+export default App</code></pre>
+<p>具体的结构图如下：</p>
+<pre class="mermaid">graph TD;
+    TodoApp-->AddTodo.js;
+    TodoApp-->TodoList.js;
+    TodoList.js-->Todo.js-1;
+    TodoList.js-->Todo.js...;
+    TodoApp-->Footer.js;
+    Footer.js-->Link.js-1;
+    Footer.js-->Link.js-2;
+    Footer.js-->Link.js-3;</pre>
+
+<h1 id="5-结语"><a href="#5-结语" class="headerlink" title="5 结语"></a>5 结语</h1><p>本文具体的代码可查看 <a href="https://github.com/Two-Ftry/react-essay/tree/master/redux-02" target="_blank" rel="noopener">这里</a>。</p>
+<p>现在的前端项目搭建，已经会涉及到很多知识。从本文可以看到，开发一个简单的UI，从项目搭建开始，我们使用到了npm来初始化项目，然后使用webpack来搭建环境，接着再组合react。而在webpack中，我们也会涉及到额外的npm包，如html-webpack-plugin、babel、babel-loader。丰富的工具让我们的开发变得简单高效，但是也增加了我们学习的成本。逐步积累，是不断进步的必经之路。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/redux-react/">#redux react</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543393359754&di=98b179b898c6079686c30465812d3c54&imgtype=0&src=http%3A%2F%2Fimg3.kuwo.cn%2Fstar%2Fuserhead%2F49%2F84%2F1473703627587_232693149.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="John Doe">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            这是我的个人博客<br>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2019/07/27/python3-nginx-uwsgi/">python3+nginx+uwsgi+django环境搭建（Centos）</a>
+        </p>
+    
+        <p>
+            <a href="/2019/06/05/前端也来学AI/">前端也来学AI</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/29/react-ace-placeholder/">react-ace placeholder &amp; 受控处理</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/20/reactRouter2-skills/">reactRouter2-skills</a>
+        </p>
+    
+        <p>
+            <a href="/2019/02/25/reactRouter1-fist-acquaintance/">reactRouter1-初识react router</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://twitter.com/?lang=en" target="_blank">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.facebook.com/" target="_blank">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://dribbble.com/" target="_blank">
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/klugjo/hexo-theme-anodyne" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://plus.google.com/" target="_blank">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.behance.net/" target="_blank">
+                            <i class="fa fa-behance"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://500px.com/" target="_blank">
+                            <i class="fa fa-500px"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:test@example.com" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="/#" target="_blank">
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                @Untitled. All right reserved | Design & Hexo <a class="link dim white" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+    <script src='https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'forest'});
+      }
+    </script>
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+(function(){
+  hljs.initHighlightingOnLoad();
+}())
+</script>
+
+</body>
+
+</html>

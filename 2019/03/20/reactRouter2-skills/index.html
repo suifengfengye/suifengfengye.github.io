@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="react-router由路由组件、导航组件和路由匹配组件这三类组件构成。整体使用上不复杂。但是在使用上也有一些技巧。本文，我们就来看看在实际开发中会使用到的react-router的技巧吧。
+1、处理当前选中菜单效果如下：
+
+
+在上图的效果里面，我们看到当选中当前菜单后，对应的菜单不再可以点击。我">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="John Doe">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="reactRouter2-skills">
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Hexo">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary">
+    
+
+    <!-- Title -->
+    
+    <title>reactRouter2-skills - Hexo</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Hexo">
+            <img src="http://www.codeblocq.com/assets/projects/hexo-theme-anodyne/assets/anodyne.svg" class="dib h3" alt="Hexo">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="主页">
+                    主页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="列表">
+                    列表
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/tags" 
+                    title="标签">
+                    标签
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/categories" 
+                    title="分类">
+                    分类
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about.html" 
+                    title="关于">
+                    关于
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">reactRouter2-skills</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2019-03-20</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/react-router/">#react router</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <p>react-router由路由组件、导航组件和路由匹配组件这三类组件构成。整体使用上不复杂。但是在使用上也有一些技巧。本文，我们就来看看在实际开发中会使用到的react-router的技巧吧。</p>
+<h2 id="1、处理当前选中菜单"><a href="#1、处理当前选中菜单" class="headerlink" title="1、处理当前选中菜单"></a>1、处理当前选中菜单</h2><p>效果如下：</p>
+<div style="border: 1px solid #ccc;"><br><img src="/2019/03/20/reactRouter2-skills/router-children.gif" alt="routerskill1"><br></div>
+
+<p>在上图的效果里面，我们看到当选中当前菜单后，对应的菜单不再可以点击。我们分两步来处理这个问题，首先我们要有路由，使用&lt;Link /&gt;组件就可以实现。</p>
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;
+        &lt;Link to=&quot;&#x2F;&quot;&gt;列表页&lt;&#x2F;Link&gt;
+    &lt;&#x2F;li&gt;
+    &lt;li&gt;
+        &lt;Link to=&quot;&#x2F;addTodo&quot;&gt;添加页&lt;&#x2F;Link&gt;
+    &lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;</code></pre>
+<p>&lt;Link /&gt;组件默认会为我们生成一个a标签，点击这个标签就可以进行跳转。那我们如何让当前选中的菜单不可被点击呢？这就需要用到&lt;Route /&gt;组件的一个children属性。children是一个方法，Route会显示children方法中返回的内容；无论&lt;Route /&gt;组件的path是否匹配当前路由，都会显示出来。如果匹配，传入的match参数会包含路由信息，否则match参数为空。利用这个特性，我们就可以实现想要的效果啦。</p>
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;
+        &lt;Route exact path=&quot;&#x2F;&quot;&gt;
+            {
+                ({ match }) =&gt; {
+                    if (match) {
+                        return (&lt;span&gt;列表页&lt;&#x2F;span&gt;)
+                    }
+                    return (&lt;Link to=&quot;&#x2F;&quot;&gt;列表页&lt;&#x2F;Link&gt;)
+                }
+            }
+        &lt;&#x2F;Route&gt;  
+    &lt;&#x2F;li&gt;
+    &lt;li&gt;
+        &lt;Route exact path=&quot;&#x2F;addTodo&quot;&gt;
+            {
+                ({match}) =&gt; {
+                    if (match) {
+                        return (&lt;span&gt;添加页&lt;&#x2F;span&gt;)
+                    }
+                    return (&lt;Link to=&quot;&#x2F;addTodo&quot;&gt;添加页&lt;&#x2F;Link&gt;)
+                }
+            }
+        &lt;&#x2F;Route&gt;   
+    &lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;</code></pre>
+<h2 id="2、404"><a href="#2、404" class="headerlink" title="2、404"></a>2、404</h2><p>react-router中有一个&lt;Switch /&gt;组件，它的作用是只显示第一个匹配到的路由对应的组件。利用这个特性，可以做404页面的展示。</p>
+<p>在&lt;Switch /&gt;的子组件中，把支持的路由写在前面，最后加一个没有path属性的路由，并将路由组件设置为404的提示，就能实现404的功能。</p>
+<pre><code>&lt;Switch&gt;
+    &lt;Route exact path=&quot;&#x2F;&quot; render={ () =&gt; {
+        return (&lt;TodoList todos={data} &#x2F;&gt;)
+    }} &#x2F;&gt;
+    &lt;Route path=&quot;&#x2F;addTodo&quot; component={AddTodo} &#x2F;&gt;
+    &lt;Route component={Page404} &#x2F;&gt;
+&lt;&#x2F;Switch&gt;</code></pre>
+<p>效果如下：</p>
+<div style="border: 1px solid #ccc;"><br><img src="/2019/03/20/reactRouter2-skills/router-404.gif" alt="routerskill2"><br></div>
+
+<h2 id="3、demo地址"><a href="#3、demo地址" class="headerlink" title="3、demo地址"></a>3、demo地址</h2><p>上面两个小技巧的demo地址在 <a href="https://github.com/Two-Ftry/react-essay/tree/master/react-router-02" target="_blank" rel="noopener">这里</a> 。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/react-router/">#react router</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543393359754&di=98b179b898c6079686c30465812d3c54&imgtype=0&src=http%3A%2F%2Fimg3.kuwo.cn%2Fstar%2Fuserhead%2F49%2F84%2F1473703627587_232693149.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="John Doe">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            这是我的个人博客<br>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2019/07/27/python3-nginx-uwsgi/">python3+nginx+uwsgi+django环境搭建（Centos）</a>
+        </p>
+    
+        <p>
+            <a href="/2019/06/05/前端也来学AI/">前端也来学AI</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/29/react-ace-placeholder/">react-ace placeholder &amp; 受控处理</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/20/reactRouter2-skills/">reactRouter2-skills</a>
+        </p>
+    
+        <p>
+            <a href="/2019/02/25/reactRouter1-fist-acquaintance/">reactRouter1-初识react router</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://twitter.com/?lang=en" target="_blank">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.facebook.com/" target="_blank">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://dribbble.com/" target="_blank">
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/klugjo/hexo-theme-anodyne" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://plus.google.com/" target="_blank">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.behance.net/" target="_blank">
+                            <i class="fa fa-behance"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://500px.com/" target="_blank">
+                            <i class="fa fa-500px"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:test@example.com" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="/#" target="_blank">
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                @Untitled. All right reserved | Design & Hexo <a class="link dim white" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+    <script src='https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'forest'});
+      }
+    </script>
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+(function(){
+  hljs.initHighlightingOnLoad();
+}())
+</script>
+
+</body>
+
+</html>

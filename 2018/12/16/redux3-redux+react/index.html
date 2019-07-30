@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Redux 支持 React、Vue、Angular、Ember、jQuery 甚至纯 JavaScript。Redux其实和React之间没有关系。但是在实际使用中，redux更多的时候是和react搭配使用。所以这片文章，我们先来让redux和react搭配起来使用。
+本文在 待办事项项目UI实">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="John Doe">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="redux(三)-redux搭配react">
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Hexo">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary">
+    
+
+    <!-- Title -->
+    
+    <title>redux(三)-redux搭配react - Hexo</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Hexo">
+            <img src="http://www.codeblocq.com/assets/projects/hexo-theme-anodyne/assets/anodyne.svg" class="dib h3" alt="Hexo">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="主页">
+                    主页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="列表">
+                    列表
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/tags" 
+                    title="标签">
+                    标签
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/categories" 
+                    title="分类">
+                    分类
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about.html" 
+                    title="关于">
+                    关于
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">redux(三)-redux搭配react</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-12-16</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/redux-react/">#redux react</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <p>Redux 支持 React、Vue、Angular、Ember、jQuery 甚至纯 JavaScript。Redux其实和React之间没有关系。但是在实际使用中，redux更多的时候是和react搭配使用。所以这片文章，我们先来让redux和react搭配起来使用。</p>
+<p>本文在 <a href="https://suifengfengye.github.io/2018/12/20/react-todo-ui/" target="_blank" rel="noopener">待办事项项目UI实现</a> 和 <a href="https://suifengfengye.github.io/2018/12/01/%E5%88%9D%E8%AF%86redux/" target="_blank" rel="noopener">初识redux</a> 这两篇文章的基础上来展开。</p>
+<h2 id="1、组合起来"><a href="#1、组合起来" class="headerlink" title="1、组合起来"></a>1、组合起来</h2><p>在”初始redux”里面，我们完成了actions、reducers的编写，并且基于reducers创建了store。那么我们怎么样把redux和react搭配起来呢？</p>
+<p>redux作为一个状态管理库，那么它提供出去的接口自然包括：</p>
+<ol>
+<li>获取应用状态信息，即state;</li>
+<li>更新应用状态：提供一个接口让外部能够触发action来更新应用状态。</li>
+</ol>
+<p>而这两个接口对应的就是store实力的getState()和dispatch()方法。所以我们只要把store实例提供给react即可。简单地，我们自然可以在需要使用应用状态信息或者更新应用状态的react组件中引入store即可，但是这种方式有一个问题，就是使用起来太麻烦。而在react里面，有一种在组件之间共享类型的方式即”Context”，这种方式不必通过组件树的每个层级都通过props传递数据。基于这个原理，为了更好地把redux和react搭配起来，社区里面提供了”react-redux”这个工具把它们串联起来。</p>
+<p>“react-redux”为应用状态能够在组件树中共享，提供了&lt;Provider />这个高级组件。&lt;Provider />接收redux的store作为属性来为react提供信息。在react的子组件中需要使用到应用状态的相关信息时，可以调用”react-redux”提供的connect方法。</p>
+<pre><code>connect([mapStateToProps], [mapDispatchToProps], [mergeProps], [options])
+mapStateToProps 
+mapStateToProps是一个函数，它接收应用状态state作为第一个参数，
+将传递到组件的props作为第二个参数，而它的返回值将会通过props的方式传递到组件中。
+具体形如：
+mapStateToProps(state, [ownProps]): stateProps
+connect的四个参数都是可选参数，其他三个参数还没用到，暂时不做介绍。</code></pre>
+<p>connect方法返回一个高阶组件。这个高阶组件接收组件作为参数返回一个包含redux相关信息的新组件。新的组件除了上面提到mapStateToProps的返回值作为props外，redux的dispatch()方法也会通过props传递进来。通过dispatch()方法我们就可以在组件中通过触发action来更改应用的状态了。</p>
+<p>所以我们结合上两篇文章的代码，然后修改入口文件src/index.js,具体如下：</p>
+<pre><code>&#x2F;&#x2F; src&#x2F;index.js
+import React from &#39;react&#39;
+import ReactDOM from &#39;react-dom&#39;
+
+import { createStore } from &#39;redux&#39;
+import { Provider } from &#39;react-redux&#39;
+import rootReducer from &#39;.&#x2F;reducers.js&#39;
+const store = createStore(rootReducer)
+
+import App from &#39;.&#x2F;app&#39;
+
+ReactDOM.render(
+    &lt;Provider store={store}&gt;
+        &lt;App &#x2F;&gt;
+    &lt;&#x2F;Provider&gt;, 
+    document.getElementsByTagName(&#39;BODY&#39;)[0],
+)</code></pre>
+<h2 id="2、添加待办事项组合（AddTodo-js）"><a href="#2、添加待办事项组合（AddTodo-js）" class="headerlink" title="2、添加待办事项组合（AddTodo.js）"></a>2、添加待办事项组合（AddTodo.js）</h2><p>AddTodo.js文件的功能就是往状态管理库添加待办事项，但它并没有使用应用状态的信息。所以我们简单地使用”react-redux”提供的connect()方法来包装它，组件中就会有redux的dispatch()方法作为props传递进来。当点击添加待办事项的按钮时，我们就通过dispatch()方法触发”ADD_TODO”action即可。</p>
+<pre><code>import React from &#39;react&#39;;
+import { connect } from &#39;react-redux&#39;
+import { addTodo } from &#39;.&#x2F;actions&#39;
+
+const AddTodo = ({ dispatch }) =&gt; {
+    let input = null
+    return (
+        &lt;div&gt;
+            &lt;input type=&quot;text&quot;
+                ref={node =&gt; {
+                    input = node
+                }} &#x2F;&gt;
+            &lt;button type=&quot;button&quot;
+                onClick={() =&gt; {
+                    dispatch(addTodo(input &amp;&amp; input.value))
+                }}
+            &gt;Add&lt;&#x2F;button&gt;
+        &lt;&#x2F;div&gt;
+    )
+}
+
+export default connect()(AddTodo)</code></pre>
+<h2 id="3、展示Todo列表信息"><a href="#3、展示Todo列表信息" class="headerlink" title="3、展示Todo列表信息"></a>3、展示Todo列表信息</h2><p>我们是在app.js中接收Todo列表的，所以使用connect将App组件和redux连接起来，然后通过connect的mapStateToProps参数来获取todos的信息。当接收到Todo列表项的点击事件的时候通过dispatch()方法更改Todo事项的状态。</p>
+<pre><code>import React, { Component } from &#39;react&#39;;
+import { connect } from &#39;react-redux&#39;
+
+import AddTodo from &#39;.&#x2F;AddTodo&#39;
+import TodoList from &#39;.&#x2F;TodoList&#39;
+import Footer from &#39;.&#x2F;Footer&#39;
+import { toggleTodo } from &#39;.&#x2F;actions&#39;
+
+class App extends Component {
+
+    constructor (props) {
+        super(props)
+        this.onTodoClick = this.onTodoClick.bind(this)
+    }
+
+    onTodoClick (index) {
+        const { dispatch } = this.props
+        dispatch(toggleTodo(index))
+    }
+
+    render() {
+        const { todos } = this.props
+        return (
+            &lt;div&gt;
+                &lt;AddTodo &#x2F;&gt;
+                &lt;TodoList todos={todos} onTodoClick={this.onTodoClick}&#x2F;&gt;
+                &lt;Footer &#x2F;&gt;
+            &lt;&#x2F;div&gt;
+        )
+    }
+}
+
+const mapStateToProps = (state) =&gt; {
+    return {
+        todos: state.todos,
+    }
+}
+
+export default connect(mapStateToProps)(App)</code></pre>
+<h2 id="4、过滤条件"><a href="#4、过滤条件" class="headerlink" title="4、过滤条件"></a>4、过滤条件</h2><p>在Footer.js文件中，我们有”ALL”、”Active”、”Completed”三个链接，它们对todos列表的过滤如下：</p>
+<ul>
+<li>ALL： 显示全部</li>
+<li>Active: 显示未完成的todo</li>
+<li>Completed：显示完成的todo</li>
+</ul>
+<p>我们为三个链接添加点击事件，每当点击链接时，dispatch()触发action更改应用状态的”visibilityFilter”。</p>
+<pre><code>&#x2F;&#x2F; src&#x2F;Footer.js
+import React from &#39;react&#39;;
+import { connect } from &#39;react-redux&#39;
+
+import Link from &#39;.&#x2F;Link&#39;
+import { setVisibilityFilter } from &#39;.&#x2F;actions&#39;
+
+const Footer = ({ dispatch, visibilityFilter }) =&gt; (
+    &lt;p&gt;
+        Show:
+        &lt;Link active={visibilityFilter === &#39;SHOW_ALL&#39;}
+            onClick={() =&gt; {
+                dispatch(setVisibilityFilter(&#39;SHOW_ALL&#39;))
+            }}&gt;ALL&lt;&#x2F;Link&gt;
+        &amp;nbsp;&amp;nbsp;
+        &lt;Link active={visibilityFilter === &#39;SHOW_ACTIVE&#39;}
+            onClick={() =&gt; {
+                dispatch(setVisibilityFilter(&#39;SHOW_ACTIVE&#39;))
+            }}&gt;Active&lt;&#x2F;Link&gt;
+        &amp;nbsp;&amp;nbsp;
+        &lt;Link active={visibilityFilter === &#39;SHOW_COMPLETED&#39;}
+            onClick={() =&gt; {
+                dispatch(setVisibilityFilter(&#39;SHOW_COMPLETED&#39;))
+            }}&gt;Completed&lt;&#x2F;Link&gt;
+    &lt;&#x2F;p&gt;
+)
+const mapStateToProps = (state) =&gt; {
+    return {
+        visibilityFilter: state.visibilityFilter,
+    }
+}
+export default connect(mapStateToProps)(Footer)</code></pre>
+<p>visibilityFilter是用来对todos列表进行过滤的，所以在todos列表展现之前，我们要根据visibilityFilter这个条件对todos列表进行处理。我们修改app.js中的mapStateToProps方法即可。</p>
+<pre><code>&#x2F;&#x2F; src&#x2F;app.js
+&#x2F;&#x2F; ...
+const mapStateToProps = (state) =&gt; {
+    return {
+        todos: state.todos.filter((todo) =&gt; {
+            if (state.visibilityFilter === &#39;SHOW_ACTIVE&#39;) {
+                return !todo.completed
+            } else if (state.visibilityFilter === &#39;SHOW_COMPLETED&#39;) {
+                return todo.completed
+            } else {
+                &#x2F;&#x2F; SHOW_ALL
+                return true
+            }
+        }),
+    }
+}
+&#x2F;&#x2F; ...</code></pre>
+<p>mapStateToProps里面，我们使用filter()函数对原始的todos列表进行过滤，如果visibilityFilter为’SHOW_ALL’,我们都返回ture，那么返回的就是整个todos列表；如果visibilityFilter为’SHOW_ACTIVE’，我们就将completed属性为false的列表项返回true，filter()函数返回的结果就是所有”未完成”的待办事项；对于”SHOW_COMPLETED”也是同理。</p>
+<h1 id="5、结语"><a href="#5、结语" class="headerlink" title="5、结语"></a>5、结语</h1><p>到此，redux就和react搭配了起来。基于这两个技术，我们就可以开发一些简单的react应用了。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/redux-react/">#redux react</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543393359754&di=98b179b898c6079686c30465812d3c54&imgtype=0&src=http%3A%2F%2Fimg3.kuwo.cn%2Fstar%2Fuserhead%2F49%2F84%2F1473703627587_232693149.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="John Doe">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            这是我的个人博客<br>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2019/07/27/python3-nginx-uwsgi/">python3+nginx+uwsgi+django环境搭建（Centos）</a>
+        </p>
+    
+        <p>
+            <a href="/2019/06/05/前端也来学AI/">前端也来学AI</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/29/react-ace-placeholder/">react-ace placeholder &amp; 受控处理</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/20/reactRouter2-skills/">reactRouter2-skills</a>
+        </p>
+    
+        <p>
+            <a href="/2019/02/25/reactRouter1-fist-acquaintance/">reactRouter1-初识react router</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://twitter.com/?lang=en" target="_blank">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.facebook.com/" target="_blank">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://dribbble.com/" target="_blank">
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/klugjo/hexo-theme-anodyne" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://plus.google.com/" target="_blank">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.behance.net/" target="_blank">
+                            <i class="fa fa-behance"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://500px.com/" target="_blank">
+                            <i class="fa fa-500px"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:test@example.com" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="/#" target="_blank">
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                @Untitled. All right reserved | Design & Hexo <a class="link dim white" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+    <script src='https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'forest'});
+      }
+    </script>
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+(function(){
+  hljs.initHighlightingOnLoad();
+}())
+</script>
+
+</body>
+
+</html>

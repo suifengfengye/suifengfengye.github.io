@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="redux作为一个纯状态管理库，不单单能和react配合使用，还可以和vue、Angular、Ember、jQuery 甚至纯JavaScript结合使用。可能大家已经注意到，在redux和react配合使用时，我们还引入了一个”react-redux”库，”react-redux”就是专门为了将r">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="John Doe">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="redux(七)－在vue上应用redux">
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Hexo">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary">
+    
+
+    <!-- Title -->
+    
+    <title>redux(七)－在vue上应用redux - Hexo</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Hexo">
+            <img src="http://www.codeblocq.com/assets/projects/hexo-theme-anodyne/assets/anodyne.svg" class="dib h3" alt="Hexo">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="主页">
+                    主页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="列表">
+                    列表
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/tags" 
+                    title="标签">
+                    标签
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/categories" 
+                    title="分类">
+                    分类
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about.html" 
+                    title="关于">
+                    关于
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">redux(七)－在vue上应用redux</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2019-01-13</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/redux-vue/">#redux vue</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <p>redux作为一个纯状态管理库，不单单能和react配合使用，还可以和vue、Angular、Ember、jQuery 甚至纯JavaScript结合使用。可能大家已经注意到，在redux和react配合使用时，我们还引入了一个”react-redux”库，”react-redux”就是专门为了将redux应用在react中而开发，所以你会看到react-redux使用Context、HOC这些react技术。既然redux应用可以这么广，那么本文我们就将redux应用在vue中试试看。<br>我们仍然以”待办事项”作为例子。首先要有一个基础的UI项目，使用vue把它构建起来，大家请看这里<a href="https://github.com/Two-Ftry/react-essay/tree/master/vue-01" target="_blank" rel="noopener">vue-base</a>。具体的搭建我就不在这里细说了。</p>
+<h1 id="1、整合方式"><a href="#1、整合方式" class="headerlink" title="1、整合方式"></a>1、整合方式</h1><p>首先，我们来看，如何在vue中应用redux？这一点我们可以参考vuex这个专门为vue设计的状态管理库。vuex是以插件的方式引入vue中。vue中提供的插件增加功能的方式，允许使用者添加全局功能。</p>
+<p>vue中定义一个插件，要求插件对象有一个install方法，vue在添加插件的时候会将Vue自身作为参数传入install方法，然后将用户自定义的参数以第二个参数options传入。</p>
+<pre><code>const MyPlugin = {}
+MyPlugin.install = function (Vue, options) {
+    &#x2F;&#x2F; ...
+}</code></pre>
+<p>定义好插件之后，只需要使用Vue.use()方法便可将插件引入到vue中。<br><pre><code>import Vue from &#39;vue&#39;
+Vue.use(MyPlugin, {...options})</code></pre></p>
+<p>Vue的插件功能具体能做的事情如下：</p>
+<ol>
+<li>添加全局方法或属性</li>
+<li>添加全局资源：指令/过滤器/过渡等</li>
+<li>通过全局 mixin 方法添加一些组件选项</li>
+<li>添加 Vue 实例方法，通过把它们添加到 Vue.prototype 上实现。</li>
+</ol>
+<p>本文我们会使用到第3点。</p>
+<pre><code>MyPlugin.install = function (Vue, options) {
+  &#x2F;&#x2F; 注入组件
+  Vue.mixin({
+    created: function () {
+      &#x2F;&#x2F; 逻辑...
+    }
+    ...
+  })
+}</code></pre>
+<h1 id="2、整合细节"><a href="#2、整合细节" class="headerlink" title="2、整合细节"></a>2、整合细节</h1><p>假如我们现在已经有了一个由redux创建的store对象。我们要考虑的几个问题是：</p>
+<ol>
+<li>vue组件如何获取到redux的state状态(即store.getState()的返回值)。</li>
+<li>当state状态变化时，如何让vue组件中使用的状态也跟着变化。</li>
+<li>vue组件中如何dispatch一个Action。</li>
+</ol>
+<h2 id="问题1"><a href="#问题1" class="headerlink" title="问题1"></a>问题1</h2><p>我们一个问题一个问题来处理。首先第1个，我们可以直接通过将store.getState()方法的返回值mixin到Vue组件中即可。</p>
+<p>我们的插件命名为vueRedux的话，那么它看起来时这样的。</p>
+<pre><code>const vueRedux = {}
+vueRedux.install = function (Vue, options) {
+  const { store } = options 
+  &#x2F;&#x2F; 注入组件
+  Vue.mixin({
+    beforeCreate: function () {
+      this.$store = {}
+      this.$store.state = store.getState()
+    }
+  })
+}
+export default vueRedux</code></pre>
+<p>上面这段代码，在Vue的beforeCreate钩子函数中，我们为组建创建了一个this.$store的空对象，然后将store.getState()的返回值保存在this.$store的state属性中。定义this.$store，主要是想将store相关的属性和方法都放在一个对象下面，方便管理。</p>
+<h2 id="问题2"><a href="#问题2" class="headerlink" title="问题2"></a>问题2</h2><p>接着我们来看第2个问题“当state状态变化时，如何让vue组件中使用的状态也跟着变化”。首先，我们都知道如果redux的state发生变化，我们可以通过store.subscribe()方法来订阅感知state的变化。那获取到新的state后怎样更新到各个组件到$store.state中去呢?</p>
+<p>这时，我们需要知道vue本身对数据的控制就是响应式的，比如说定义了一个a属性，b属性依赖于a，那么当a变化时b也会跟着变化。</p>
+<pre><code>new Vue({
+    data () {
+        return {
+            a: &#39;hello world&#39;
+        }
+    },
+    computed: {
+        b () {
+            return a + &#39; xxx&#39;
+        }
+    }
+})</code></pre>
+<p>上面这段代码，假如我修改了a的值，computed中定义的b的值也会跟着变化。基于这个理解，我们就可以来解决第2个问题了。我们可以将store.getState()的返回值定义为一个vue实例的state属性，每当检测到store的state发生变化，就更新这个vue实例的state属性。然后我们就把这个vue实例mixin到Vue组件中，不就让state变成响应式的了么？代码如下：</p>
+<pre><code>const vueRedux = {}
+vueRedux.install = (Vue, { store }) =&gt; {
+    &#x2F;&#x2F; 将redux的state放置到一个vue的实例中，
+    &#x2F;&#x2F; 每当更新vue实例的state，就能利用vue的特性来触发组件中依赖了state的属性进行更新
+    store._vm = new Vue({
+        data: {
+          state: store.getState()
+        },
+        created () {
+            this.init()
+        },
+        methods: {
+            init () {
+                &#x2F;&#x2F; redux状态变化
+                store.subscribe(() =&gt; {
+                    this.state = store.getState()
+                })
+            }
+        }
+    })
+    &#x2F;&#x2F; 使用mixin为每一个组件都添加$store属性，以获取store的state和方法
+    Vue.mixin({
+        beforeCreate: function () {
+            this.$store = store._vm
+        }
+    })
+}
+
+export default vueRedux</code></pre>
+<p>引入这个插件后的Vue组件中，就可以通过this.$store.state来获取应用的状态了。</p>
+<pre><code>&#x2F;&#x2F; 示例代码
+export default {
+ computed: {
+     visibilityFilter () {
+         const state = this.$store.state
+         return state.visibilityFilter
+     }
+ }
+}</code></pre>
+<h2 id="问题3"><a href="#问题3" class="headerlink" title="问题3"></a>问题3</h2><p>第3个问题就比较简单，我们只需要为Vue组件mixin进一个dispatch方法即可。这个dispatch()方法就调用store.dispatch()方法来派发action。</p>
+<pre><code>&#x2F;&#x2F; 使用mixin为每一个组件都添加$store属性，以获取store的state和方法
+    Vue.mixin({
+        beforeCreate: function () {
+            this.$store = store._vm
+            this.$store.dispatch = (action) =&gt; {
+                store.dispatch(action)
+            }
+        }
+    })</code></pre>
+<h1 id="3、插件代码"><a href="#3、插件代码" class="headerlink" title="3、插件代码"></a>3、插件代码</h1><p>经过上一节的分析，vueRedux插件的代码如下：<br><pre><code>
+const vueRedux = {}
+vueRedux.install = (Vue, { store }) =&gt; {
+    &#x2F;&#x2F; 将redux的state放置到一个vue的实例中，
+    &#x2F;&#x2F; 每当更新vue实例的state，就能利用vue的特性来触发组件中依赖了state的属性进行更新
+    store._vm = new Vue({
+        data: {
+          state: store.getState()
+        },
+        created () {
+            this.init()
+        },
+        methods: {
+            init () {
+                &#x2F;&#x2F; redux状态变化
+                store.subscribe(() =&gt; {
+                    this.state = store.getState()
+                })
+            }
+        }
+    })
+    &#x2F;&#x2F; 使用mixin为每一个组件都添加$store属性，以获取store的state和方法
+    Vue.mixin({
+        beforeCreate: function () {
+            this.$store = store._vm
+            this.$store.dispatch = (action) =&gt; {
+                store.dispatch(action)
+            }
+        }
+    })
+}
+
+export default vueRedux</code></pre></p>
+<h1 id="4、最后"><a href="#4、最后" class="headerlink" title="4、最后"></a>4、最后</h1><p>要把这个插件应用起来，我们需要使用Vue.use()方法引入插件。</p>
+<pre><code>import Vue from &#39;vue&#39;
+&#x2F;&#x2F; 假如已经有了一个创建redux store并导出store的store.js文件
+import store from &#39;.&#x2F;store&#39;
+Vue.use(vueRedux, { store })</code></pre>
+<p>本文主要逻辑在于如何实现vueRedux这个插件，文章中的代码并不完整。具体的示例代码大家可以撮<a href="https://github.com/Two-Ftry/react-essay/tree/master/vue-03" target="_blank" rel="noopener">这里vue-03</a>。</p>
+<p>此外，对于vue和redux整合，github上也有对应的库<a href="https://github.com/yang-wei/vue-redux" target="_blank" rel="noopener">vueRedux</a>。这个库和本文的思想很相近，大家要将redux应用在vue的话，可以考虑这个库。不过，当然和vue配合的最好状态管理库是vuex。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/redux-vue/">#redux vue</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543393359754&di=98b179b898c6079686c30465812d3c54&imgtype=0&src=http%3A%2F%2Fimg3.kuwo.cn%2Fstar%2Fuserhead%2F49%2F84%2F1473703627587_232693149.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="John Doe">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            这是我的个人博客<br>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2019/07/27/python3-nginx-uwsgi/">python3+nginx+uwsgi+django环境搭建（Centos）</a>
+        </p>
+    
+        <p>
+            <a href="/2019/06/05/前端也来学AI/">前端也来学AI</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/29/react-ace-placeholder/">react-ace placeholder &amp; 受控处理</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/20/reactRouter2-skills/">reactRouter2-skills</a>
+        </p>
+    
+        <p>
+            <a href="/2019/02/25/reactRouter1-fist-acquaintance/">reactRouter1-初识react router</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://twitter.com/?lang=en" target="_blank">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.facebook.com/" target="_blank">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://dribbble.com/" target="_blank">
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/klugjo/hexo-theme-anodyne" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://plus.google.com/" target="_blank">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.behance.net/" target="_blank">
+                            <i class="fa fa-behance"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://500px.com/" target="_blank">
+                            <i class="fa fa-500px"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:test@example.com" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="/#" target="_blank">
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                @Untitled. All right reserved | Design & Hexo <a class="link dim white" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+    <script src='https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'forest'});
+      }
+    </script>
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+(function(){
+  hljs.initHighlightingOnLoad();
+}())
+</script>
+
+</body>
+
+</html>

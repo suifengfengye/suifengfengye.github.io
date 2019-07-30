@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="1、树图1.1、简介能够展现不同数据元素之间的依赖。树图中，两个节点之间只有一条路径相互连接彼此。
+1.2 构建树图
+数据
+
+树图的数据，仍然使用d3.hierarchy()或者d3.stratify()生成的数据。（见9-1）
+
+布局
+
+树图的布局，使用d3.tree()这个方法。d3.tree(">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="John Doe">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="d3 树图、封闭图">
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Hexo">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary">
+    
+
+    <!-- Title -->
+    
+    <title>d3 树图、封闭图 - Hexo</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Hexo">
+            <img src="http://www.codeblocq.com/assets/projects/hexo-theme-anodyne/assets/anodyne.svg" class="dib h3" alt="Hexo">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="主页">
+                    主页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="列表">
+                    列表
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/tags" 
+                    title="标签">
+                    标签
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/categories" 
+                    title="分类">
+                    分类
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about.html" 
+                    title="关于">
+                    关于
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">d3 树图、封闭图</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-11-28</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-handshake-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/d3/">#d3</a> <a class="fw3 ph1 dib" href="/tags/charts/">#charts</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="1、树图"><a href="#1、树图" class="headerlink" title="1、树图"></a>1、树图</h1><h2 id="1-1、简介"><a href="#1-1、简介" class="headerlink" title="1.1、简介"></a>1.1、简介</h2><p>能够展现不同数据元素之间的依赖。树图中，两个节点之间只有一条路径相互连接彼此。</p>
+<h2 id="1-2-构建树图"><a href="#1-2-构建树图" class="headerlink" title="1.2 构建树图"></a>1.2 构建树图</h2><ul>
+<li>数据</li>
+</ul>
+<p>树图的数据，仍然使用d3.hierarchy()或者d3.stratify()生成的数据。（见9-1）</p>
+<ul>
+<li>布局</li>
+</ul>
+<p>树图的布局，使用d3.tree()这个方法。d3.tree()是一个工厂方法，根据设置生成一个可以用于布局的方法（假设为 <em>_tree</em> ）。 </p>
+<p><em>_tree()</em> 方法接收一个参数，即d3.hierarchy()或者d3.stratify()生成的数据座位参数。方法执行后，就往参数对象中回填x/y坐标数据。</p>
+<pre><code>var _tree = d3.tree()
+        .size([w, h - 80]);
+// root为d3.hierarchy()或者d3.stratify()方法生成的树状结构数据
+_tree(root);
+</code></pre><ul>
+<li>画圆圈、文本</li>
+</ul>
+<p>由于树状结构数据不是一个数组，而我们在画圆圈、或者现实文本的时候需要一个数组，所以需要将root转化为数组。使用 <em>root.descendants()</em> 方法转化。</p>
+<p>画圆圈、添加文本按正常的d3添加circle、text元素即可。</p>
+<pre><code>const nodes = root.descendants();
+</code></pre><ul>
+<li>画连线</li>
+</ul>
+<p>画竖线使用 <em>d3.linkVertical()</em> 方法，画横线使用 <em>d3.linkHorizonal()</em> 方法。这两个方法的返回值，都有x、y两个属性方法，把上一步中的树状结构节点中生存的x、y值传入即可。（x、y值已经使用d3.tree()(root)计算出来）。</p>
+<p>而连线的数据需要调用 <em>_tree(root).links()</em> 方法获取。</p>
+<p>具体代码如下：</p>
+<pre><code>// 画线
+const linkFn = isVertical ? d3.linkVertical()
+        .x(function (d) { return d.x; })
+        .y(function (d) { return d.y; })
+        : d3.linkHorizontal()
+            .x(function (d) { return d.y; })
+            .y(function (d) { return d.x; })
+
+_bodyG.selectAll(&#39;.link&#39;)
+        .data(_tree(root).links())
+        .enter()
+        .append(&#39;path&#39;)
+        .attr(&#39;class&#39;, &#39;link&#39;)
+        .attr(&#39;d&#39;, linkFn);
+</code></pre><p>2、封闭图</p>
+<p>封闭图跟创建树图的步骤基本一致。下面只总结一下封闭图的不同知识点。</p>
+<ul>
+<li>布局</li>
+</ul>
+<p>布局使用 <em>d3.pack()</em> 方法，这是一个工厂方法。根据设置可以生成一个可以用于布局封闭图的方法（假设生成的方法为 <em>_pack</em> ）.</p>
+<pre><code>var _pack = d3.pack()
+    .size([w, h])
+    .padding(3);
+</code></pre><p>调用 <em>_pack()</em> 方法，可以为树状结构数据计算出坐标值（包括x／y/r这些属性值）。</p>
+<pre><code>// root为树状结构数据，由d3.hierarchy()或者d3.stratify()方法生成。
+_pack(root);
+</code></pre><ul>
+<li>背景色</li>
+</ul>
+<pre><code>var _colors = d3.scaleSequential(d3.interpolateMagma)
+    .domain([-4, 4]);
+</code></pre><ul>
+<li>剪切</li>
+</ul>
+<p>由于圆圈内的text文本可能超出范围，为避免这种情况出现，就可以使用svg的剪切功能。</p>
+<pre><code>circle-id
+clipPath
+    - use(&#39;xlink:href&#39;, &#39;#circle-id&#39;)
+    - id: pack-clip-id
+text
+    - attr(&#39;clip-path&#39;, &#39;url(#pack-clip-id)&#39;)
+</code></pre><ul>
+<li>hover</li>
+</ul>
+<p>d3支持svg的事件。使用 <em>mouseover</em> 和 <em>mouseout</em> 来模拟hover。</p>
+<pre><code>packEnters.each(function (d) {
+        d.node = this;
+    }).on(&#39;mouseover&#39;, hovered(true))
+        .on(&#39;mouseout&#39;, hovered(false));
+    function hovered (hover) {
+        return (d) =&gt; {
+            d3.selectAll(d.ancestors().map(function (d) {
+                return d.node;
+            })).classed(&#39;pack-node-hover&#39;, hover);
+        }
+    };
+</code></pre>
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/d3/">#d3</a> <a class="fw3 ph1 dib" href="/tags/charts/">#charts</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543393359754&di=98b179b898c6079686c30465812d3c54&imgtype=0&src=http%3A%2F%2Fimg3.kuwo.cn%2Fstar%2Fuserhead%2F49%2F84%2F1473703627587_232693149.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="John Doe">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            这是我的个人博客<br>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2019/07/27/python3-nginx-uwsgi/">python3+nginx+uwsgi+django环境搭建（Centos）</a>
+        </p>
+    
+        <p>
+            <a href="/2019/06/05/前端也来学AI/">前端也来学AI</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/29/react-ace-placeholder/">react-ace placeholder &amp; 受控处理</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/20/reactRouter2-skills/">reactRouter2-skills</a>
+        </p>
+    
+        <p>
+            <a href="/2019/02/25/reactRouter1-fist-acquaintance/">reactRouter1-初识react router</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://twitter.com/?lang=en" target="_blank">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.facebook.com/" target="_blank">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://dribbble.com/" target="_blank">
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/klugjo/hexo-theme-anodyne" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://plus.google.com/" target="_blank">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.behance.net/" target="_blank">
+                            <i class="fa fa-behance"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://500px.com/" target="_blank">
+                            <i class="fa fa-500px"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:test@example.com" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="/#" target="_blank">
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                @Untitled. All right reserved | Design & Hexo <a class="link dim white" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+    <script src='https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'forest'});
+      }
+    </script>
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+(function(){
+  hljs.initHighlightingOnLoad();
+}())
+</script>
+
+</body>
+
+</html>

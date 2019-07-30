@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="redux是一个状态管理库。核心概念，包括：action、reducer和store。
+
+action： 是把数据从应用传到store的有效载荷。
+reducer: 指定了应用状态的变化如何相应action，并发送到store。
+store: 把action和reducer联系到一起的对象。
+
+但是">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="John Doe">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="redux(一)-初识redux">
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Hexo">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary">
+    
+
+    <!-- Title -->
+    
+    <title>redux(一)-初识redux - Hexo</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Hexo">
+            <img src="http://www.codeblocq.com/assets/projects/hexo-theme-anodyne/assets/anodyne.svg" class="dib h3" alt="Hexo">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="主页">
+                    主页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="列表">
+                    列表
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/tags" 
+                    title="标签">
+                    标签
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/categories" 
+                    title="分类">
+                    分类
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about.html" 
+                    title="关于">
+                    关于
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">redux(一)-初识redux</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-12-01</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/redux/">#redux</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <p>redux是一个状态管理库。核心概念，包括：action、reducer和store。</p>
+<ol>
+<li>action： 是把数据从应用传到store的有效载荷。</li>
+<li>reducer: 指定了应用状态的变化如何相应action，并发送到store。</li>
+<li>store: 把action和reducer联系到一起的对象。</li>
+</ol>
+<p>但是单单了解这三个概念和它们的内在联系还是不足够的。我们还需要了解state的由来，以及如何获取state、更新state；state和store又是什么区别。</p>
+<p>下面，我们一步一步来深入学习这三个概念。</p>
+<blockquote><p>在文章中，我们会以”待办事项”为例子展开讲解redux。待办事项的需求如下：</p>
+<ol>
+<li>一个待办事项的列表(用todos数组存储)<br>todos数组中的元素为待办事项内容，包含两个字段:<pre><code>{
+ text: &#39;待办事项1&#39;, &#x2F;&#x2F; string
+ completed: false,&#x2F;&#x2F; boolean 是否完成的状态
+}</code></pre></li>
+<li>一个过滤条件filter，filter是一个字符串，标明目前需要将哪些待办事项展现出来<pre><code>SHOW_ALL: 展示全部待办事项
+SHOW_COMPLETED: 展示已完成的待办事项
+SHOW_ACTIVE: 展示未完成的待办事项
+</code></pre></li>
+</ol>
+</blockquote>
+<h2 id="1、-Action"><a href="#1、-Action" class="headerlink" title="1、 Action"></a>1、 Action</h2><p>Action 是把数据从应用传到store的有效载荷。Action本质上是一个普通的javascript对象。Action有一个约定，它必须包含 <strong>“type”</strong> 属性。</p>
+<pre><code>{
+    type: &#39;ADD_TODO&#39;,
+    text: &#39;something&#39;,
+}</code></pre>
+<p>在实际应用中，我们会编写生成Action的方法，即 <em>Action</em> 创建函数，方便传递Action。</p>
+<pre><code>&#x2F;&#x2F; actions.js
+&#x2F;&#x2F; 添加待办事项
+export function addTodo(text) {
+  return { type: &#39;ADD_TODO&#39;, text }
+}
+&#x2F;&#x2F; 对index对应待办事项的状态进行取反操作
+export function toggleTodo(index) {
+  return { type: &#39;TOGGLE_TODO&#39;, index }
+}
+&#x2F;&#x2F; 更改过滤条件
+export function setVisibilityFilter(filter) {
+  return { type: &#39;SET_VISIBILITY_FILTER&#39;, filter }
+}</code></pre>
+<p>在actions.js中，定义了三个Action创建函数，addTodo将待办事项添加到应用状态中，toggleTodo函数会更改index对应的事项的状态（未完成／已完成），setVisibilityFilter设置过滤条件。</p>
+<h2 id="2、-Reducer"><a href="#2、-Reducer" class="headerlink" title="2、 Reducer"></a>2、 Reducer</h2><p>reducer会响应接收到的action，然后改变对应的应用状态。reducer实际上是一个函数，这个函数包含两个参数，第一个参数为state，第二个参数为action。</p>
+<pre><code>&#x2F;&#x2F; reducers.js
+&#x2F;&#x2F; 待办事项的过滤条件
+function visibilityFilter(state = &#39;SHOW_ALL&#39;, action) {
+  switch (action.type) {
+    case &#39;SET_VISIBILITY_FILTER&#39;:
+      return action.filter
+    default:
+      return state
+  }
+}</code></pre>
+<p>在这里，参数state=[]的写法为es6语法，表明将state初始化为一个空数组。reducer的返回值组成了应用的状态（即”总state”,下面写到”应用的状态”的时候指的就是”总state”）。每一次调用reducer，参数state(即”子state”，”子state”构成了”总state”)的值为对应reducer对应状态的上一个值，该reducer的返回值又将更新到应用的状态中。如果是第一次调用reducer，参数state则为初始值。参数action则是上面介绍的一个带有type属性的普通javascript对象。</p>
+<p>我们来细看visibilityFilter函数的逻辑，它使用switch语句，根据action.type来区分处理不同的action。如果action.type等于’SET_VISIBILITY_FILTER’,它将action.filter返回，作为这个”子state”的新值；如果action.type不等于’SET_VISIBILITY_FILTER’，则将state原样返回，不做处理。</p>
+<p>如果仅有一个reducer，那么这个reducer的返回值就是应用的状态。不过在一般的应用中，为了便于阅读和维护，都会有多个reducer。然后再通过redux提供的全局方法 combineReducers 将reducer组合起来，构成最终的应用状态。combineReducers函数接收一个Object对象参数，该对象的key值可以设置任意多个，key值对应的value值为一个reducer。</p>
+<pre><code>&#x2F;&#x2F; reducers.js
+import { combineReducers } from &#39;redux&#39;
+&#x2F;&#x2F; 待办事项的过滤条件
+function visibilityFilter(state = &#39;SHOW_ALL&#39;, action) {
+    switch (action.type) {
+      case &#39;SET_VISIBILITY_FILTER&#39;:
+        return action.filter
+      default:
+        return state
+    }
+  }
+  &#x2F;&#x2F; 待办事项列表reducer
+  function todos(state = [], action) {
+      switch (action.type) {
+          &#x2F;&#x2F; 添加待办事项
+          case &#39;ADD_TODO&#39;:
+              return [...state, {
+                  text: action.text,
+                  completed: false,
+              }]
+          break
+          &#x2F;&#x2F; 对index对应待办事项的状态进行取反操作
+          case &#39;TOGGLE_TODO&#39;:
+              const data = state.map((todo, index) =&gt; {
+                  return {
+                      ...todo,
+                      completed: index === action.index ? !todo.completed : todo.completed
+                  }
+              })
+              return data
+          break
+          default:
+              return state
+      }
+  }
+  
+  const rootReducer = combineReducers({
+      visibilityFilter,
+      todos
+  })
+  
+  export default rootReducer</code></pre>
+<p>reducers.js中，最终导出的是一个合并的reducer(rootReducer)。rootReducer最终的结构(即应用状态的结构)如下：</p>
+<pre><code>{
+    visibilityFilter: &#39;SHOW_ALL&#39;,
+    todos: [],
+}</code></pre>
+<p>应用状态由reducers的返回值构成，但是在代码中我们不会直观地看到上面这个结构。这个结构需要我们结合各个reducer，根据它的第一个参数state或者返回值分析出来。在我们学习更高级框架(如dva)的时候，会看到如果应用的状态能够直接配置，那么我们对应用状态的维护将会变得更加简便和直观。</p>
+<p>reducer的触发时机，就是当使用redux提供的dispatch方法派发一个action时触发。但是dispatch方法不是redux的全局方法，它是store实例的方法，接下来我们就介绍store。</p>
+<h2 id="3、-Store"><a href="#3、-Store" class="headerlink" title="3、 Store"></a>3、 Store</h2><p>store是把action和reducer联系到一起的对象。这里我们要注意和state区别开来，state由reducer的返回值组成，是整个应用的状态。store则是由redux提供的createStore方法创建的一个实例，createStore的参数就是reducers。</p>
+<pre><code>&#x2F;&#x2F; index.js
+import { createStore } from &#39;redux&#39;
+import rootReducer from &#39;.&#x2F;reducers.js&#39;
+const store = createStore(rootReducer)</code></pre>
+<p>store创建之后，获取应用状态信息、更新应用状态等操作都是通过store实例的方法来实现。</p>
+<ol>
+<li>获取应用状态：提供 getState() 方法获取 state；</li>
+<li>更新应用状态：提供 dispatch(action) 方法更新 state；</li>
+<li>订阅：通过 subscribe(listener) 注册监听器。</li>
+</ol>
+<p>以上，便介绍完了redux的几个重要概念。接下来，我们来验证一下。redux是一个状态管理库，它本身是不涉及UI，所以验证工作我们就通过console.log方法打印出state来验证。这可以通过subscribe方法来实现，当state方法变化时，subscribe方法的回调函数参数就会被调用。</p>
+<p>在index.js中补充验证代码，如下：</p>
+<pre><code>&#x2F;&#x2F; index.js
+import { createStore } from &#39;redux&#39;
+import { addTodo, toggleTodo, setVisibilityFilter } from &#39;.&#x2F;actions.js&#39;
+import rootReducer from &#39;.&#x2F;reducers.js&#39;
+const store = createStore(rootReducer)
+
+&#x2F;&#x2F; 验证
+store.subscribe(() =&gt; {
+    console.log(store.getState())
+})
+&#x2F;&#x2F; 打印初始状态
+console.log(&#39;初始状态&#39;, store.getState())
+
+store.dispatch(addTodo(&#39;Learn Action&#39;))
+store.dispatch(addTodo(&#39;Learn reducer&#39;))
+store.dispatch(addTodo(&#39;Learn state&#39;))
+store.dispatch(addTodo(&#39;Learn store&#39;))
+store.dispatch(toggleTodo(0))
+store.dispatch(toggleTodo(1))
+store.dispatch(setVisibilityFilter(&#39;SHOW_COMPLETED&#39;))
+</code></pre>
+<h2 id="4、把代码跑起来"><a href="#4、把代码跑起来" class="headerlink" title="4、把代码跑起来"></a>4、把代码跑起来</h2><p>上面的样例代码包含3个文件: actions.js、reducers.js以及index.js。样例代码依赖于redux npm包，并使用了一些es6语法，想要把代码跑起来，我们使用webpack对这几个文件进行打包处理，让它成为浏览器可加载解析的文件。具体请参考<a href="https://github.com/Two-Ftry/react-essay/tree/master/redux-01" target="_blank" rel="noopener">redux-01</a>，里面对构建步骤进行了详细的说明。</p>
+<p><img src="/2018/12/01/redux/result-20181213.png" alt="result"></p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/redux/">#redux</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543393359754&di=98b179b898c6079686c30465812d3c54&imgtype=0&src=http%3A%2F%2Fimg3.kuwo.cn%2Fstar%2Fuserhead%2F49%2F84%2F1473703627587_232693149.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="John Doe">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            这是我的个人博客<br>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+                        <div class="mt5 tc tl-l">
+    <h3>Categories</h3>
+    
+        <p>
+            <a href="/categories/redux/">redux</a>
+        </p>
+    
+</div>
+
+
+                        <hr class="dn-l mw4 black-50 mt5" />
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2019/07/27/python3-nginx-uwsgi/">python3+nginx+uwsgi+django环境搭建（Centos）</a>
+        </p>
+    
+        <p>
+            <a href="/2019/06/05/前端也来学AI/">前端也来学AI</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/29/react-ace-placeholder/">react-ace placeholder &amp; 受控处理</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/20/reactRouter2-skills/">reactRouter2-skills</a>
+        </p>
+    
+        <p>
+            <a href="/2019/02/25/reactRouter1-fist-acquaintance/">reactRouter1-初识react router</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://twitter.com/?lang=en" target="_blank">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.facebook.com/" target="_blank">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://dribbble.com/" target="_blank">
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/klugjo/hexo-theme-anodyne" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://plus.google.com/" target="_blank">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.behance.net/" target="_blank">
+                            <i class="fa fa-behance"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://500px.com/" target="_blank">
+                            <i class="fa fa-500px"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:test@example.com" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="/#" target="_blank">
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                @Untitled. All right reserved | Design & Hexo <a class="link dim white" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+    <script src='https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'forest'});
+      }
+    </script>
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+(function(){
+  hljs.initHighlightingOnLoad();
+}())
+</script>
+
+</body>
+
+</html>

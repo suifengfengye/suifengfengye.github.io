@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="redux的生态中，提供了中间件（即middleware）的方式来增强redux。middleware是指可以被嵌入在框架接收请求到产生响应过程之中的代码。middleware的方式能够很好的对代码进行解耦，如此middleware就能够独立成一个个的功能模块，方便维护和升级。那在redux中是如何">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="John Doe">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="redux(五)-中间件">
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Hexo">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary">
+    
+
+    <!-- Title -->
+    
+    <title>redux(五)-中间件 - Hexo</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Hexo">
+            <img src="http://www.codeblocq.com/assets/projects/hexo-theme-anodyne/assets/anodyne.svg" class="dib h3" alt="Hexo">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="主页">
+                    主页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="列表">
+                    列表
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/tags" 
+                    title="标签">
+                    标签
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/categories" 
+                    title="分类">
+                    分类
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about.html" 
+                    title="关于">
+                    关于
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">redux(五)-中间件</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2019-01-08</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/redux-middleware/">#redux middleware</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <p>redux的生态中，提供了中间件（即middleware）的方式来增强redux。middleware是指可以被嵌入在框架接收请求到产生响应过程之中的代码。middleware的方式能够很好的对代码进行解耦，如此middleware就能够独立成一个个的功能模块，方便维护和升级。那在redux中是如何提供对middleware的支持呢？redux提供了applyMiddleware()方法来支持middleware。applyMiddleware()方法的实现思路，就是将这些middleware形成一个链表，当dispatch()一个action的时候，就逐个调用调用链表里的middlware。它看起来就像下面这样。</p>
+<p><img src="/2019/01/08/redux5-middleware/redux-middleware.png" alt="middleware"></p>
+<p>实现的代码像下面这样：</p>
+<pre><code>function applyMiddleware(store, middlewares) {
+  middlewares = middlewares.slice()
+  middlewares.reverse()
+
+  let dispatch = store.dispatch
+  middlewares.forEach(middleware =&gt;
+    dispatch = middleware(store)(dispatch)
+  )
+
+  return Object.assign({}, store, { dispatch })
+}</code></pre>
+<p>这段代码，首先将middlewares逆序排列，然后遍历这个逆序的middlewares，获取每个middleware的返回函数赋给dispatch，遍历完成后dispatch变量就是第一个middleware的返回函数，最后把store中的dispatch()方法替换成了第一个middleware的返回函数。所以如果我们添加了中间件，在执行store.dispatch()方法时，这个方法已经不是redux本身的dispatch()方法，而是第一个middleware的返回函数，redux本身的dispatch()方法会在所有middlewares的返回函数都执行后被调用。</p>
+<p>同时，我们也注意到在遍历middlewares，我们对middleware进行了两次调用，分别传入了store和dispatch变量，即middleware(store)(dispatch)，store变量是一个固定的值，但是dispatch在每一次遍历后都重新指向了前一个middleware的返回值，在官方文档中这个dispatch变量命名为next，其实是更合理的。所以我们在编写middleware的时候，需要遵循如下的写法：</p>
+<pre><code>const middleware = (store) =&gt; (next) =&gt; (action) =&gt; {
+    &#x2F;&#x2F; ... code
+    const result = next(action)
+    &#x2F;&#x2F; ... code
+    return result
+}</code></pre>
+<p>store的传入只是方便在middleware中获取应用的状态，而next的传入是为了形成一个链表，指向下一个middleware，所以在自己编写middleware的时候，需要在middleware内部手动调用next(action)以便能调用下一个middleware。</p>
+<h1 id="1、logger中间件"><a href="#1、logger中间件" class="headerlink" title="1、logger中间件"></a>1、logger中间件</h1><p>logger中间件的目的，是在dispatch执行前做一次记录，dispatch完成后，打印出dispatch之后的state。按照middleware的方式，我们来完成这个组件。</p>
+<pre><code>&#x2F;&#x2F; middlewares&#x2F;logger.js
+const logger = (store) =&gt; (next) =&gt; (action) =&gt; {
+    console.log(&#39;dispatching&#39;, action)
+    next(action)
+    console.log(&#39;next state&#39;, store.getState())
+}
+
+export default logger</code></pre>
+<p>logger中间件，在执行next之前打印出当前的action，然后执行next（即往后继续执行其他的middleware或者执行redux的dispatch()）,当dispatch完成后，打印出state信息。</p>
+<h1 id="2、thunk-middleware"><a href="#2、thunk-middleware" class="headerlink" title="2、thunk middleware"></a>2、thunk middleware</h1><p>我们都知道，如果想要使用redux dispatch一个function类型的action，需要添加一个redux-thunk的middleware。那它是怎样实现的呢？我们来尝试实现它。</p>
+<pre><code>&#x2F;&#x2F; middlewares&#x2F;thunk.js
+const thunk = (store) =&gt; (next) =&gt; (action) =&gt; {
+    if (typeof action === &#39;function&#39;) {
+        action(store.dispatch, store.getState)
+    } else {
+        next(action)
+    }
+}
+
+export default thunk</code></pre>
+<p>上面这段代码，仍然采用了redux middleware的实现模式来包装（即(store) =&gt; (next) =&gt; (action)）。在实现的内部，我们判断传递进来的action，如果不是一个function，那么就调用下一个middleware；如果是function，我们就执行这个action，并且把redux的dispatch()和getState()方法参数传入到这个action方法，到此调用链结束。</p>
+<p>在acion生成方法的内部，如果使用了dispatch()方法重新发起action，则会沿着middlewares的调用链表重新执行。一般dispatch一个function action，会像下面这样：</p>
+<pre><code>&#x2F;&#x2F; 使用示意-action生成方法
+export function dispatchInitTodos() {
+  return (dispatch) =&gt; {
+    getTodos().then((data) =&gt; {
+      dispatch({
+        type: &#39;INIT_TODOS&#39;,
+        data,
+      })
+    })
+  }
+}
+store.dispatch(dispatchInitTodos())</code></pre>
+<h1 id="3、promise-middleware"><a href="#3、promise-middleware" class="headerlink" title="3、promise middleware"></a>3、promise middleware</h1><p>dispatch一个Promise，和dispatch一个function会不会是一样的方式呢？我们先来写一个使用promise作为action的代码。</p>
+<pre><code>function dispatchPromise(){
+  return  new Promise((resolve, reject) =&gt; {
+    &#x2F;&#x2F; ...
+  })
+}</code></pre>
+<p>如上述代码，我们dispatch一个Promise，这个Promise对象在创建出来的时候，就已经开始执行内部的逻辑了。这和function还是不一样的，function定义出来之后，可以延后执行，所以我们可以在middleware的实现中调用function。</p>
+<p>所以在实现promise middleware的时候，思路是将Promise的resolved（或者rejected）的值作为一个action，重新使用store.dispatch()方法来发起这个action。</p>
+<pre><code>&#x2F;&#x2F; middlewares&#x2F;promise.js
+const promise = (store) =&gt; (next) =&gt; (action) =&gt; {
+    &#x2F;&#x2F; 抽取一个dispatch的方法
+    &#x2F;&#x2F; 支持派发多个action
+    const dispatchInnerAction = (data) =&gt; {
+        if (Array.isArray(data)) {
+            data.forEach(item =&gt; {
+                store.dispatch(item)
+            })
+        } else {
+            store.dispatch(data)
+        }
+    }
+    if (typeof action.then === &#39;function&#39;) {
+        action.then((data) =&gt; {
+            dispatchInnerAction(data)
+        }, (err) =&gt; {
+            dispatchInnerAction(err)
+        })
+    } else {
+        next(action)
+    }
+}
+
+export default promise</code></pre>
+<p>上述这段代码，当action.then为一个function的时候，我们就断定这个action为一个Promise对象。我们调用action.then()方法来获取这个Promises对象的resolved值（或者rejected值）。<strong>当然，这里resolved值（或者rejected值）要求必须为一个action。</strong>为了支持多个action，对resolved值（或者rejected值）进行了判断，如果是一个数组，逐个遍历并dispatch，否则直接dispatch。</p>
+<p>Promise action的生成函数大体如下：</p>
+<pre><code>&#x2F;&#x2F; actions.js
+import { getTodos } from &#39;.&#x2F;services.js&#39;
+
+&#x2F;&#x2F; 初始化todos
+export function initTodos(list) {
+  return {
+    type: &#39;INIT_TODOS&#39;,
+    list,
+  }
+}
+
+export function dispatchInitTodosPromise(){
+  return  getTodos().then((data) =&gt; {
+    return initTodos(data.list)
+  })
+}</code></pre>
+<p>上述代码，getTodos()方法本身返回了一个Promise，我们调用getTodos().then()后传递给middleware的依然是一个Promise，并且使用 return initTodos(…)的形式resolved了一个action。在promise middleware中，这个resolved了的action会使用store.dispatch()方法发起。</p>
+<h1 id="4、结语"><a href="#4、结语" class="headerlink" title="4、结语"></a>4、结语</h1><p>本文我们学习了redux middleware的实现机制，同时举了几个例子来编写自定义的middleware。如果不明白，可以到redux的官方文档中，查看 <a href="https://redux.js.org/advanced/middleware" target="_blank" rel="noopener">middlewares</a> 这篇教程，里面很详尽地道出了middleware的演进思路。不过这篇文章中举的两个例子，logger和crashReporter，虽然简单易懂，但是代表性不是特别强，最好自己动手实现一个简单的redux-thunk和redux-promise，对于redux middleware的理解将会更加深入。</p>
+<p>本章的实现代码可以查看<a href="https://github.com/Two-Ftry/react-essay/tree/master/redux-06" target="_blank" rel="noopener">redux-06</a>。</p>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/redux-middleware/">#redux middleware</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543393359754&di=98b179b898c6079686c30465812d3c54&imgtype=0&src=http%3A%2F%2Fimg3.kuwo.cn%2Fstar%2Fuserhead%2F49%2F84%2F1473703627587_232693149.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="John Doe">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            这是我的个人博客<br>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2019/07/27/python3-nginx-uwsgi/">python3+nginx+uwsgi+django环境搭建（Centos）</a>
+        </p>
+    
+        <p>
+            <a href="/2019/06/05/前端也来学AI/">前端也来学AI</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/29/react-ace-placeholder/">react-ace placeholder &amp; 受控处理</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/20/reactRouter2-skills/">reactRouter2-skills</a>
+        </p>
+    
+        <p>
+            <a href="/2019/02/25/reactRouter1-fist-acquaintance/">reactRouter1-初识react router</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://twitter.com/?lang=en" target="_blank">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.facebook.com/" target="_blank">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://dribbble.com/" target="_blank">
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/klugjo/hexo-theme-anodyne" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://plus.google.com/" target="_blank">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.behance.net/" target="_blank">
+                            <i class="fa fa-behance"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://500px.com/" target="_blank">
+                            <i class="fa fa-500px"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:test@example.com" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="/#" target="_blank">
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                @Untitled. All right reserved | Design & Hexo <a class="link dim white" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+    <script src='https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'forest'});
+      }
+    </script>
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+(function(){
+  hljs.initHighlightingOnLoad();
+}())
+</script>
+
+</body>
+
+</html>

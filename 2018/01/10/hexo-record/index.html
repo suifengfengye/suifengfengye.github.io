@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="在使用hexo的过程中，会不断地遇到一些需要解决的问题或者添加一些新特性，发现这是一个持续渐进的过程。所以一一记录在这里，方便查阅。
+1、图片资源在官方文档中，要添加资源，给出的使用方式是,先修改_config.yml配置文件post_asset_folder属性，然后使用 asset_img 标签">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="John Doe">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="hexo-record">
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Hexo">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary">
+    
+
+    <!-- Title -->
+    
+    <title>hexo-record - Hexo</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Hexo">
+            <img src="http://www.codeblocq.com/assets/projects/hexo-theme-anodyne/assets/anodyne.svg" class="dib h3" alt="Hexo">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="主页">
+                    主页
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="列表">
+                    列表
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/tags" 
+                    title="标签">
+                    标签
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/categories" 
+                    title="分类">
+                    分类
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about.html" 
+                    title="关于">
+                    关于
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">hexo-record</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2018-01-10</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+                        <div class="tags-container-vertical">
+                            <div class="tags-sub-container">
+                                <a class="fw3 ph1 dib" href="/tags/hexo/">#hexo</a>
+                            </div>
+                        </div>
+                    
+
+                    <!-- Main Post Content -->
+                    <p>在使用hexo的过程中，会不断地遇到一些需要解决的问题或者添加一些新特性，发现这是一个持续渐进的过程。所以一一记录在这里，方便查阅。</p>
+<h1 id="1、图片资源"><a href="#1、图片资源" class="headerlink" title="1、图片资源"></a>1、图片资源</h1><p>在官方文档中，要添加资源，给出的使用方式是,先修改_config.yml配置文件post_asset_folder属性，然后使用 asset_img 标签。</p>
+<pre><code>_config.yml
+post_asset_folder: true</code></pre>
+<p>&#123;&#37; asset_img slug [title] &#37;&#125;</p>
+<p>但是一直没有成功。解决方式是，添加一个hexo-asset-image插件，然后使用markdown的![alt](path)语法来添加。同样，post_asset_folder属性也需要设置为true。</p>
+<h2 id="1-1-安装插件"><a href="#1-1-安装插件" class="headerlink" title="1.1 安装插件"></a>1.1 安装插件</h2><p>在命令行工具中，进入到hexo项目的根目录，执行如下命令:<br><pre><code>&gt; npm install -S hexo-asset-image</code></pre></p>
+<h2 id="1-2-使用注意"><a href="#1-2-使用注意" class="headerlink" title="1.2 使用注意"></a>1.2 使用注意</h2><p>加入我们使用hexo new “blog-name”添加了一篇名字为”blog-name”的博客，那么也会生成一个blog-name命名的文件夹，在这个文件夹中添加资源文件即可。在使用![alt](path)引用时，path直接写资源文件名称即可。<br>    假如有如下的目录结构：<br><pre><code>|- _posts
+ |- blog-name
+  |- hexo-asset.png
+ |- blog-name.md</code></pre><br>那在blog-name.md中引用hexo-asset.png时，直接写名字即可。<br><pre><code>![alt](hexo-asset.png)</code></pre></p>
+<h1 id="2、流程图"><a href="#2、流程图" class="headerlink" title="2、流程图"></a>2、流程图</h1><p>使用hexo写博客的时候，会遇到需要添加流程图的地方，简单粗暴的方式就是使用其他的画图软件画好后截图然后通过图片的方式引入。不过，在hexo里面，我们也可以通过编码的方式实现流程图。这就需要用到”hexo-filter-mermaid-diagrams”插件。</p>
+<h2 id="2-1-安装插件"><a href="#2-1-安装插件" class="headerlink" title="2.1 安装插件"></a>2.1 安装插件</h2><p>在命令行工具中，进入到hexo项目的根目录，执行如下命令:<br><pre><code>&gt; npm install -S hexo-filter-mermaid-diagrams</code></pre></p>
+<h2 id="2-2-添加配置"><a href="#2-2-添加配置" class="headerlink" title="2.2 添加配置"></a>2.2 添加配置</h2><p>在_config.yml文件中添加如下配置：<br><pre><code># mermaid chart
+mermaid: ## mermaid url https:&#x2F;&#x2F;github.com&#x2F;knsv&#x2F;mermaid
+  enable: true  # default true
+  version: &quot;7.1.2&quot; # default v7.1.2
+  options:  # find more api options from https:&#x2F;&#x2F;github.com&#x2F;knsv&#x2F;mermaid&#x2F;blob&#x2F;master&#x2F;src&#x2F;mermaidAPI.js
+    #startOnload: true  &#x2F;&#x2F; default true</code></pre><br>这段配置就告诉hexo启用hexo-filter-mermaid-diagrams插件。但是这还不行，我们还需要在主题文件中添加加载css和js的代码。以在themes/landscape/layout/_partial/after-footer.ejs中添加为例。<br><pre><code>&#x2F;&#x2F; themes&#x2F;landscape&#x2F;layout&#x2F;_partial&#x2F;after-footer.ejs
+&lt;% if (theme.mermaid.enable) { %&gt;
+    &lt;script src=&#39;https:&#x2F;&#x2F;cdn.bootcss.com&#x2F;mermaid&#x2F;&lt;%= theme.mermaid.version %&gt;&#x2F;mermaid.min.js&#39;&gt;&lt;&#x2F;script&gt;
+    &lt;script&gt;
+      if (window.mermaid) {
+        mermaid.initialize({theme: &#39;forest&#39;});
+      }
+    &lt;&#x2F;script&gt;
+  &lt;% } %&gt;</code></pre><br>    hexo模板引擎在解析这段代码的时候，会判断theme.mermaid.enable是否为true（即我们第一步的配置）。如果启用，会将&lt;%= theme.mermaid.version %&gt;替换为配置中的版本号。</p>
+<h2 id="2-3-使用流程图"><a href="#2-3-使用流程图" class="headerlink" title="2.3 使用流程图"></a>2.3 使用流程图</h2><p>```mermaid<br>graph TD;<br>    A–&gt;B;<br>    A–&gt;C;<br>    B–&gt;D;<br>    C–&gt;D;<br>``` </p>
+<p>结果如下：</p>
+<pre><code class="mermaid">graph TD;
+    A--&gt;B;
+    A--&gt;C;
+    B--&gt;D;
+    C--&gt;D;
+</code></pre>
+<h1 id="3、代码高亮"><a href="#3、代码高亮" class="headerlink" title="3、代码高亮"></a>3、代码高亮</h1><p>hexo本身是有代码高亮功能的，如果不喜欢，可以添加其他的高亮方式。添加其他的高亮方式。我们这里以添加highlight.min.js为例。<br>首先在_config.yml中将hexo本身的代码高亮关闭。</p>
+<pre><code>&#x2F;&#x2F; _config.yml
+highlight:
+  enable: false</code></pre>
+<p>然后在主题中添加如下代码：</p>
+<pre><code>&#x2F;&#x2F; themes&#x2F;landscape&#x2F;layout&#x2F;_partial&#x2F;after-footer.ejs
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&#x2F;&#x2F;cdn.bootcss.com&#x2F;highlight.js&#x2F;9.2.0&#x2F;styles&#x2F;github.min.css&quot;&gt;
+&lt;script src=&quot;&#x2F;&#x2F;cdn.bootcss.com&#x2F;highlight.js&#x2F;9.2.0&#x2F;highlight.min.js&quot;&gt;&lt;&#x2F;script&gt;
+&lt;script&gt;
+(function(){
+  hljs.initHighlightingOnLoad();
+}())
+&lt;&#x2F;script&gt;</code></pre>
+                    
+                    <!-- Tags Bottom -->
+                    
+                        <div class="tags-container-bottom">
+                            <i class="fa fa-tag pr3 text-main-color"></i><a class="fw3 ph1 dib" href="/tags/hexo/">#hexo</a>
+                        </div>
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1543393359754&di=98b179b898c6079686c30465812d3c54&imgtype=0&src=http%3A%2F%2Fimg3.kuwo.cn%2Fstar%2Fuserhead%2F49%2F84%2F1473703627587_232693149.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="John Doe">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            这是我的个人博客<br>
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2019/07/27/python3-nginx-uwsgi/">python3+nginx+uwsgi+django环境搭建（Centos）</a>
+        </p>
+    
+        <p>
+            <a href="/2019/06/05/前端也来学AI/">前端也来学AI</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/29/react-ace-placeholder/">react-ace placeholder &amp; 受控处理</a>
+        </p>
+    
+        <p>
+            <a href="/2019/03/20/reactRouter2-skills/">reactRouter2-skills</a>
+        </p>
+    
+        <p>
+            <a href="/2019/02/25/reactRouter1-fist-acquaintance/">reactRouter1-初识react router</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://twitter.com/?lang=en" target="_blank">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.facebook.com/" target="_blank">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://dribbble.com/" target="_blank">
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/klugjo/hexo-theme-anodyne" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://plus.google.com/" target="_blank">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.behance.net/" target="_blank">
+                            <i class="fa fa-behance"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://500px.com/" target="_blank">
+                            <i class="fa fa-500px"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:test@example.com" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="/#" target="_blank">
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                @Untitled. All right reserved | Design & Hexo <a class="link dim white" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+    <script src='https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'forest'});
+      }
+    </script>
+  
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+(function(){
+  hljs.initHighlightingOnLoad();
+}())
+</script>
+
+</body>
+
+</html>
