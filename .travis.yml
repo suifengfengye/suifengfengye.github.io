@@ -26,4 +26,4 @@ branches:
     - gh-page
 env:
  global:
-   - GH_REF: github.com/dmego/dmego.github.io.git
+   - GH_REF: git@github.com:suifengfengye/suifengfengye.github.io.git
